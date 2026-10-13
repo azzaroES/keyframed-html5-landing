@@ -20,6 +20,7 @@ assets/
   source/               original renders (zip), kept locally for re-exporting (not in git)
 tools/serve.mjs         local preview server (node, no dependencies)
 .agents/rules/          the project's house rules (colours, HTML, spacing, motion)
+CLAUDE.md               guidance for Claude: the house rules, the owner's taste, performance rules
 css/                    linked from index.html in this order (it is the cascade)
   tokens.css            every colour, font, size, space and timing value
   base.css              reset, body, headings
