@@ -1,0 +1,12 @@
+# Machine-specific Claude Code permissions
+.claude/settings.local.json
+
+# Original renders (a 24 MB zip of JPGs): only needed to re-export the
+# frames, not by the site. Keep it locally, or track it with Git LFS.
+assets/source/
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/

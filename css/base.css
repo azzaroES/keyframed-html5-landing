@@ -1,0 +1,89 @@
+/* Base & typography
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--color-night);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
+  letter-spacing: var(--track-body);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: 1.04;
+  letter-spacing: var(--track-display);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul[role="list"],
+ol.film__cast {
+  list-style: none;
+  padding: 0;
+}
+
+address {
+  font-style: normal;
+}
+
+svg,
+canvas {
+  display: block;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-crust);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--color-gold));
+  outline-offset: 3px;
+}
+
+main:focus {
+  outline: none;
+}
+
+[id] {
+  scroll-margin-top: var(--space-4);
+}

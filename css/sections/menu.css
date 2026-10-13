@@ -1,0 +1,108 @@
+/* Menu film
+   The hero's frames played in reverse, with the products as its credits:
+   they hang in the top part of the screen and alternate sides. At rest (no
+   JS, reduced motion) they lay out as a plain menu list under the title.
+   ========================================================================== */
+
+.film--menu .film__title {
+  padding-block: var(--space-12) var(--space-5);
+}
+
+.film__cast--menu {
+  display: grid;
+  gap: var(--space-6) var(--space-5);
+  width: 100%;
+  max-width: var(--width-content);
+  padding: 0 var(--gutter) var(--space-12);
+  text-align: left;
+}
+
+.film__cast--menu .cast-card {
+  align-items: flex-start;
+}
+
+.film__cast--menu .cast-card__name {
+  font-size: var(--text-h3);
+}
+
+.film__cast--menu .cast-card__note {
+  display: block;
+  font-size: var(--text-small);
+  line-height: 1.75;
+  color: var(--color-cream-a90);
+}
+
+/* Price with its order button beside it; the button stays clickable over
+   the film (the credits layer itself lets clicks through) */
+.cast-card__buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.cast-card__order {
+  pointer-events: auto;
+  text-shadow: none;
+}
+
+.button--small {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-micro);
+  letter-spacing: 0.16em;
+}
+
+.cast-card__price {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+  font-weight: var(--weight-display);
+  line-height: 1;
+  letter-spacing: var(--track-display);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-gold);
+}
+
+@media (min-width: 600px) {
+  .film__cast--menu {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .film__cast--menu {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card {
+    top: clamp(var(--space-10), 14vh, var(--space-20));
+  }
+
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card--left {
+    transform: translate3d(calc((var(--cast-t) - 1) * var(--space-5)), 0, 0);
+  }
+
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card--right {
+    transform: translate3d(calc((1 - var(--cast-t)) * var(--space-5)), 0, 0);
+  }
+
+  /* A notch smaller than the hero's, so a whole credit stays up top */
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card__name {
+    font-size: clamp(2.25rem, 4.6vw, 4.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 900px) {
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card--left,
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card--right {
+    top: calc(var(--space-8) + env(safe-area-inset-top, 0px));
+    bottom: auto;
+  }
+
+  .film--menu:is(.is-loading-sequence, .has-sequence) .cast-card__name {
+    font-size: clamp(2.25rem, 8vw, 3.5rem);
+  }
+}

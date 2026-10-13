@@ -1,0 +1,125 @@
+/* Paging: every section is uncovered from beneath the one before it, like
+   turning pages: the hero film lifts off the order page, the order page
+   off the method, the method off the menu film, the film off the club and
+   the club off the footer. Each page waits stuck to the bottom of the
+   screen, a full screen tall and a layer below the page before it, under
+   a dark veil that fades as it is uncovered (the JS drives --page-reveal,
+   0 to 1, and plays the page's assembly and strokes with it). The menu
+   film is a long scroll track rather than one screen, so it tucks its
+   first screen up under the method page instead, its pinned stage
+   waiting there to be uncovered. A page still fully covered is left out
+   of the drawing (.is-covered) until half a screen before its turn, so
+   the phone never composites the whole stack. Normal flow with motion
+   off. */
+.cta {
+  position: relative;
+}
+
+/* 100svh, measured by the JS: the screen with the browser's toolbars
+   showing, which does not change as they slide away mid-scroll */
+.page-probe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100vh;
+  height: 100svh;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cta__inner,
+.site-footer > .container {
+  transform: translate3d(0, calc((1 - var(--page-reveal, 1)) * var(--space-8)), 0);
+}
+
+/* The rise and the veil change on every frame of an uncover: on layers of
+   their own they move and fade without repainting a full-screen page */
+:root:not(.a11y-still) :is(.cta__inner, .site-footer > .container) {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (overflow: clip) {
+    /* Earlier pages sit above later ones */
+    :root:not(.a11y-still) main > * {
+      position: relative;
+    }
+
+    :root:not(.a11y-still) .hero {
+      z-index: 6;
+    }
+
+    :root:not(.a11y-still) .order {
+      z-index: 5;
+    }
+
+    :root:not(.a11y-still) .pillars {
+      z-index: 4;
+    }
+
+    :root:not(.a11y-still) .film--menu {
+      z-index: 3;
+    }
+
+    :root:not(.a11y-still) .cta {
+      z-index: 2;
+    }
+
+    :root:not(.a11y-still) .site-footer {
+      z-index: 1;
+    }
+
+    /* A page whose content is taller than the screen (.is-tall, from the
+       JS) would hide its top while stuck, so it simply scrolls in */
+    :root:not(.a11y-still) :is(.order, .pillars, .cta, .site-footer):not(.is-tall) {
+      position: sticky;
+      bottom: 0;
+      display: grid;
+      align-content: center;
+      min-height: 100vh;
+      min-height: 100svh;
+    }
+
+    /* A page centres its content, so it needs less padding to breathe. The
+       same padding when it is too tall, so the JS measures one height
+       either way and a page never flips back and forth. */
+    :root:not(.a11y-still) :is(.order, .pillars, .cta) {
+      padding-block: clamp(var(--space-6), 8vh, var(--space-15));
+    }
+
+    /* Still fully covered: drawn by nobody (its links stay in the tab
+       order; focusing one scrolls its page into view) */
+    :root:not(.a11y-still) .is-covered {
+      opacity: 0;
+    }
+
+    /* The menu film starts one screen early, underneath the method page,
+       and its track grows by that screen so the scrub keeps its length */
+    :root.js:not(.a11y-still) .film--menu.has-sequence {
+      margin-top: -100vh;
+      margin-top: -100svh;
+      height: calc(var(--scrub) + 100vh);
+      height: calc(var(--scrub) + 100svh);
+    }
+
+    /* The veil: dark over a page still covered, gone once it is uncovered */
+    :root:not(.a11y-still) :is(.order, .pillars, .cta, .site-footer):not(.is-tall)::after,
+    :root.js:not(.a11y-still) .film--menu.has-sequence .film__stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-color: var(--color-night);
+      opacity: calc((1 - var(--page-reveal, 1)) * 0.85);
+      pointer-events: none;
+      will-change: opacity;
+    }
+
+    /* Each lifting page casts a soft shadow on the one it uncovers, so the
+       edge reads even dark on dark */
+    :root:not(.a11y-still) :is(.hero, .order, .pillars, .film--menu, .cta) {
+      box-shadow: 0 var(--space-4) var(--space-8) var(--color-shadow-a60);
+    }
+  }
+}

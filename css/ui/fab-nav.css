@@ -1,0 +1,155 @@
+/* Menu FAB: a gold burger at the bottom centre, shown once the hero's own
+   scroll cue is gone. Pressing it fans the sections out around it on a
+   half circle of small round icons, one after another; each is named in a
+   tooltip on hover or focus. */
+.fab-nav {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  z-index: 24;
+  width: 48px;
+  height: 48px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(-50%, var(--space-2), 0);
+  transition:
+    opacity var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    visibility 0s var(--duration-ui);
+}
+
+.fab-nav.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(-50%, 0, 0);
+  transition:
+    opacity var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    visibility 0s;
+}
+
+.fab-nav__button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-crust-a20);
+  border-radius: 50%;
+  background-color: var(--color-gold);
+  color: var(--color-crust);
+  box-shadow: 0 12px 32px -8px var(--color-shadow-a60);
+  cursor: pointer;
+  transition: transform var(--duration-ui) var(--ease-out);
+}
+
+.fab-nav.is-open .fab-nav__button {
+  transform: rotate(90deg);
+}
+
+.fab-nav__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.fab-nav__icon--close,
+.fab-nav.is-open .fab-nav__icon--open {
+  display: none;
+}
+
+.fab-nav.is-open .fab-nav__icon--close {
+  display: block;
+}
+
+.fab-nav__items {
+  position: absolute;
+  inset: 0;
+}
+
+/* Closed, the icons wait folded behind the button; open, each travels to
+   its stop on the half circle, 76px out, a beat after the one before */
+.fab-nav__item {
+  --x: 0px;
+  --y: 0px;
+  --delay: 0ms;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 0, 0) scale(0.4);
+  transition:
+    transform 0.45s var(--ease-out) var(--delay),
+    opacity 0.3s var(--ease-out) var(--delay),
+    visibility 0s 0.45s;
+}
+
+.fab-nav.is-open .fab-nav__item {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(var(--x), var(--y), 0) scale(1);
+  transition:
+    transform 0.45s var(--ease-out) var(--delay),
+    opacity 0.3s var(--ease-out) var(--delay),
+    visibility 0s;
+}
+
+.fab-nav__item:nth-child(1) {
+  --x: -70px;
+  --y: -29px;
+}
+
+.fab-nav__item:nth-child(2) {
+  --x: -29px;
+  --y: -70px;
+  --delay: 40ms;
+}
+
+.fab-nav__item:nth-child(3) {
+  --x: 29px;
+  --y: -70px;
+  --delay: 80ms;
+}
+
+.fab-nav__item:nth-child(4) {
+  --x: 70px;
+  --y: -29px;
+  --delay: 120ms;
+}
+
+.fab-nav__link {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-gold-a35);
+  border-radius: 50%;
+  background-color: var(--color-night-a90);
+  color: var(--color-gold);
+  box-shadow: 0 8px 24px -8px var(--color-shadow-a60);
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    background-color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out);
+}
+
+.fab-nav__link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fab-nav__link:hover,
+.fab-nav__link:focus-visible {
+  border-color: var(--color-gold);
+  background-color: var(--color-gold);
+  color: var(--color-crust);
+}
+
+/* WhatsApp's strip and the menu share the bottom edge: the menu steps
+   aside while the strip is open */
+body:has(.wa[open]) .fab-nav {
+  opacity: 0;
+  visibility: hidden;
+}

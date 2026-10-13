@@ -1,0 +1,277 @@
+/* Footer
+   ========================================================================== */
+
+.site-footer {
+  padding-block: var(--space-10) var(--space-6);
+  border-top: 1px solid var(--rule);
+}
+
+/* The hero's "Desliza" cue, mirrored: its beam runs upward and it rewinds
+   the page to the top */
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: max-content;
+  margin: 0 auto var(--space-8);
+  color: var(--on-surface-soft);
+  transition: color var(--duration-ui) var(--ease-out);
+}
+
+.scroll-cue:hover {
+  color: var(--accent-ink);
+}
+
+.scroll-cue--up .scroll-cue__line::after {
+  animation-direction: reverse;
+}
+
+.site-footer__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.wordmark--footer {
+  color: var(--on-surface);
+}
+
+.wordmark--footer .wordmark__name {
+  font-size: 1.25rem;
+}
+
+.wordmark--footer .wordmark__sub {
+  font-size: 0.625rem;
+  color: var(--accent-ink);
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-4);
+}
+
+.site-footer__nav a {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-body);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--on-surface-soft);
+  transition: color var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__nav a:hover {
+  color: var(--accent-ink);
+}
+
+.site-footer__social {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.site-footer__social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  color: var(--on-surface-soft);
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__social a:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent-ink);
+}
+
+.site-footer__social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Payment methods: one consistent badge style for every card and gateway */
+.site-footer__pay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+}
+
+.site-footer__pay-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-ui);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--on-surface-soft);
+}
+
+.site-footer__pay-label svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-ink);
+}
+
+.pay {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.pay__item {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-display);
+  letter-spacing: 0.02em;
+  color: var(--on-surface);
+}
+
+.site-footer__bottom {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--on-surface-soft);
+  text-align: center;
+}
+
+.site-footer__place a {
+  color: var(--on-surface);
+  transition: color var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__place a:hover {
+  color: var(--accent-ink);
+}
+
+.site-footer__credit b {
+  font-weight: var(--weight-display);
+  color: var(--accent-ink);
+}
+
+.heart {
+  display: inline-block;
+  animation: heart-beat 1.4s ease-in-out infinite;
+}
+
+@keyframes heart-beat {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.25);
+  }
+
+  30% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@media (min-width: 860px) {
+  .site-footer__top {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .site-footer__pay {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .site-footer__bottom {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Phones: a compact footer, so the whole of it fits even a short screen
+   and it is always revealed in place beneath the club rather than
+   scrolled in: wordmark and social icons share a row with the links
+   under them, smaller payment badges, tight spacing, and room under the
+   last line for the floating buttons. Last in the file, so it wins over
+   the rules above. */
+@media (max-width: 859px) {
+  .site-footer {
+    padding-top: var(--space-4);
+    padding-bottom: calc(var(--space-2) + 64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer .scroll-cue {
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
+  }
+
+  .site-footer .scroll-cue__line {
+    height: 24px;
+  }
+
+  .site-footer__top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-2);
+    text-align: left;
+  }
+
+  .site-footer__nav {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .site-footer__social {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .site-footer__pay {
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+  }
+
+  .pay__item {
+    height: 24px;
+    padding: 0 var(--space-1);
+    border-radius: 4px;
+    font-size: 0.6875rem;
+  }
+
+  .site-footer__bottom {
+    gap: 0;
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    font-size: var(--text-micro);
+    line-height: 1.8;
+  }
+}

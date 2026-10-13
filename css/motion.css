@@ -1,0 +1,83 @@
+/* Motion preferences
+   Under reduced motion: no smooth scroll, no parallax or transform play,
+   and every bit of content fully visible at rest.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .js .site-header,
+  .js .hero__eyebrow,
+  .js .hero__title,
+  .js .hero__scroll {
+    animation: none !important;
+  }
+
+  .hero__scroll-line::after,
+  .scroll-cue__line::after {
+    animation: none !important;
+    opacity: 0;
+  }
+
+  .film__title,
+  .film__media,
+  [data-parallax] {
+    transform: none !important;
+  }
+
+  .film__title {
+    opacity: 1 !important;
+  }
+
+  .js .hero__eyebrow::before,
+  .js .hero__eyebrow::after {
+    animation: none !important;
+  }
+}
+
+/* The same stillness, switched on by hand from the accessibility panel
+   (.a11y-still on <html>); the JS also stops the films, parallax,
+   reveals and strokes when it is set */
+:root.a11y-still {
+  scroll-behavior: auto;
+}
+
+.a11y-still *,
+.a11y-still *::before,
+.a11y-still *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.a11y-still [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.a11y-still :is(.film__title, .film__media, [data-parallax]) {
+  transform: none !important;
+}
+
+.a11y-still .film__title {
+  opacity: 1 !important;
+}
+
+.a11y-still :is(.hero__scroll-line, .scroll-cue__line)::after {
+  opacity: 0;
+}

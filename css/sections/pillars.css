@@ -1,0 +1,84 @@
+/* Pillars
+   ========================================================================== */
+
+.pillars__grid {
+  margin-top: var(--space-8);
+  display: grid;
+  gap: var(--space-8);
+}
+
+.pillar {
+  text-align: center;
+}
+
+.pillar__icon {
+  width: 48px;
+  height: 48px;
+  margin-inline: auto;
+  color: var(--accent-ink);
+}
+
+.pillar__title {
+  margin-top: var(--space-4);
+  font-size: var(--text-h3);
+}
+
+.pillar__copy {
+  margin: var(--space-3) auto 0;
+  max-width: 32ch;
+  font-size: var(--text-body);
+  line-height: 1.85;
+  color: var(--on-surface-soft);
+}
+
+/* Phones and small tablets: the three rules sit side by side in a row you
+   swipe through, so the whole section stays one screen tall (and can be
+   uncovered like the other pages) */
+@media (max-width: 879px) {
+  .pillars__grid {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(78%, 1fr);
+    gap: var(--space-3);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) var(--space-2);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .pillars__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pillar {
+    scroll-snap-align: center;
+  }
+}
+
+@media (max-width: 599px) {
+  .pillars__grid {
+    margin-top: var(--space-5);
+  }
+
+  .pillar__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .pillar__title {
+    margin-top: var(--space-2);
+  }
+
+  .pillar__copy {
+    margin-top: var(--space-2);
+    line-height: 1.75;
+  }
+}
+
+@media (min-width: 880px) {
+  .pillars__grid {
+    margin-top: var(--space-10);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+}

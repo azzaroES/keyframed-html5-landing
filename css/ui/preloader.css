@@ -1,0 +1,96 @@
+/* Loading screen
+   The logo sits in black and white and fills with its colour from the
+   bottom up as the film loads (the JS writes --load, 0 to 1); full, it
+   holds a beat and the screen fades open. The fill is two transforms on
+   GPU layers: the colour copy's frame slides up while the copy inside it
+   slides down by the same amount, so the logo stays put and is revealed.
+   Without JS it never shows; if the JS never finishes, it lets itself out.
+   ========================================================================== */
+.preloader {
+  --load: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-2);
+  background-color: var(--color-night);
+  color: var(--color-cream-a60);
+  touch-action: none;
+  transition:
+    opacity 0.7s var(--ease-out),
+    visibility 0s 0.7s;
+  animation: preloader-giveup 0.01s 15s forwards;
+}
+
+.preloader__logo {
+  position: relative;
+  width: min(15rem, 56vw, 36svh);
+  aspect-ratio: 1;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.preloader__logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.preloader__mono {
+  filter: grayscale(1);
+}
+
+/* The logo's own drawing spans 19% to 88% of its square from the bottom
+   (the rest is clear margin), so the fill covers that stretch */
+.preloader__fill {
+  --level: calc(0.19 + 0.69 * var(--load));
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translate3d(0, calc((1 - var(--level)) * 100%), 0);
+  transition: transform 0.35s var(--ease-out);
+  will-change: transform;
+}
+
+.preloader__color {
+  transform: translate3d(0, calc((var(--level) - 1) * 100%), 0);
+  transition: transform 0.35s var(--ease-out);
+  will-change: transform;
+}
+
+.preloader__count {
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-kicker);
+  letter-spacing: var(--track-kicker);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Open: the screen fades away as the logo swells slightly */
+.preloader.is-open {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader.is-open .preloader__logo {
+  transform: scale(1.08);
+}
+
+@keyframes preloader-giveup {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* The hero's entrance waits behind the loading screen and plays as it
+   opens */
+.preloader:not(.is-open) ~ .site-header,
+.preloader:not(.is-open) ~ main .hero__eyebrow,
+.preloader:not(.is-open) ~ main .hero__title,
+.preloader:not(.is-open) ~ main .hero__scroll,
+.preloader:not(.is-open) ~ main .hero__eyebrow::before,
+.preloader:not(.is-open) ~ main .hero__eyebrow::after {
+  animation-play-state: paused;
+}

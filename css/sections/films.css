@@ -1,0 +1,544 @@
+/* Films: the hero and the menu, dark stages with scroll-driven frames
+   initFilm (the JS) scrubs the WebP frames through each .film__canvas:
+   while a film's first frame loads, .is-loading-sequence lifts its credits
+   out of flow; once it decodes, .has-sequence stretches the section into a
+   scroll track (--scrub), the stage pins, and scroll progress picks the
+   frame and plays the credits. Without JS, under reduced motion, or on
+   failure a film stays one viewport tall, the gradients stand in, and its
+   credits lay out statically under the title (a billing block in the hero,
+   a plain menu list in the menu film).
+   ========================================================================== */
+
+.film {
+  --scrub: var(--scrub-hero);
+  position: relative;
+}
+
+.film--menu {
+  --scrub: var(--scrub-menu);
+}
+
+.film__stage {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Pinned scrub mode only where `overflow: clip` wins the html/body
+     cascade above: with the `overflow-x: hidden` fallback, body computes to
+     a scroll container and the sticky stage would never pin, leaving five
+     viewports of bare track. the JS applies the same check, so those
+     browsers keep the one-viewport hero and the billing-block cast. */
+  @supports (overflow: clip) {
+    .js .film.has-sequence {
+      height: var(--scrub);
+    }
+
+    .js .film.has-sequence .film__stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      min-height: 0;
+    }
+
+    .js .film.has-sequence .film__media {
+      /* The scrub owns the media: no parallax drift, so no overscan needed */
+      inset: 0;
+    }
+  }
+}
+
+.film__media {
+  position: absolute;
+  inset: -8% 0; /* overscan so gentle parallax never exposes an edge */
+  z-index: -1;
+}
+
+/* Stage lighting, painted behind the canvas */
+.film__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(38% 30% at 50% 38%, var(--color-gold-a12), transparent 70%),
+    radial-gradient(55% 45% at 50% 42%, var(--color-cream-a05), transparent 72%),
+    radial-gradient(70% 28% at 50% 88%, var(--color-gold-a08), transparent 65%);
+}
+
+.film__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 16:9 frames will cover-crop to the mount */
+}
+
+/* The canvas is opaque (black until drawn), so it only shows while the
+   film runs; otherwise the stage lighting behind it stands in */
+.film:not(.has-sequence) .film__canvas {
+  visibility: hidden;
+}
+
+/* Slight dark grade plus vignette above the canvas, unifying frames and
+   copy */
+.film__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-night-a25);
+  background-image:
+    radial-gradient(120% 95% at 50% 42%, transparent 50%, var(--color-night-a85) 100%),
+    linear-gradient(180deg, var(--color-night-a45) 0%, transparent 24%, transparent 70%, var(--color-night-a85) 100%);
+}
+
+/* Opening veil: while the hero film runs it starts 90% dark with only the
+   title showing; as the scroll begins a spotlight opens in the dark and
+   the veil fades, uncovering the film (the JS drives --spot, 0 to 1).
+   Absent from the static fallback. */
+.film__veil {
+  display: none;
+}
+
+.film:is(.is-loading-sequence, .has-sequence) .film__veil {
+  --spot-edge: calc(var(--spot, 0) * 110vmax);
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+  background-color: var(--color-night-a90);
+  -webkit-mask-image: radial-gradient(circle at 50% 42%, transparent calc(var(--spot-edge) - 12vmax), black calc(var(--spot-edge) + 6vmax));
+  mask-image: radial-gradient(circle at 50% 42%, transparent calc(var(--spot-edge) - 12vmax), black calc(var(--spot-edge) + 6vmax));
+  opacity: calc(1 - max(0, (var(--spot, 0) - 0.6) / 0.4));
+}
+
+/* Touch screens: a moving mask repaints the whole screen every frame, so
+   the veil simply fades there */
+.is-touch .film:is(.is-loading-sequence, .has-sequence) .film__veil {
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: calc(1 - var(--spot, 0));
+  will-change: opacity;
+}
+
+/* The title card leaves on transform and opacity alone */
+.film:is(.is-loading-sequence, .has-sequence) .film__title {
+  will-change: transform, opacity;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1440px;
+  text-align: center;
+  padding-block: var(--space-15) var(--space-5);
+}
+
+/* The film's kicker carries its strokes on both sides instead of beneath */
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: 0;
+  color: var(--color-gold);
+}
+
+.hero__eyebrow::before,
+.hero__eyebrow::after {
+  content: "";
+  position: static;
+  width: 48px;
+  height: 2px;
+  background-color: var(--color-gold);
+  transform-origin: right;
+}
+
+.hero__eyebrow::after {
+  transform-origin: left;
+}
+
+/* Capped by viewport height too, so two lines plus the eyebrow always clear
+   the scroll indicator on short, wide screens */
+.hero__title {
+  margin-top: var(--space-3);
+  font-size: var(--text-hero);
+  font-size: min(var(--text-hero), 18vh);
+  font-size: min(var(--text-hero), 18svh);
+  letter-spacing: var(--track-hero);
+  color: var(--color-ivory);
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-cream-a60);
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    opacity 0.6s var(--ease-out),
+    visibility 0.6s;
+}
+
+.hero__scroll:hover {
+  color: var(--color-gold);
+}
+
+.hero__scroll.is-hidden {
+  /* visibility's discrete 0.6s transition flips to hidden only after the
+     fade, dropping the invisible link from the tab order; un-hiding is
+     immediate. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero__scroll-label,
+.scroll-cue__label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-kicker);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+}
+
+.hero__scroll-line,
+.scroll-cue__line {
+  position: relative;
+  width: 1px;
+  height: 48px;
+  overflow: hidden;
+  background-color: var(--hairline, var(--color-cream-a12));
+}
+
+.hero__scroll-line::after,
+.scroll-cue__line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background-image: linear-gradient(180deg, transparent, var(--color-gold) 40%, var(--color-gold) 60%, transparent);
+  transform: translateY(-100%);
+  animation: scroll-beam 2.8s ease-in-out infinite;
+}
+
+/* Cast credits
+   At rest they form a film-poster billing block under the title. While the
+   sequence runs they leave the flow: each credit takes the screen for its
+   scene, alternating left and right, and the JS writes --cast-t (0 to 1)
+   to fade, slide and underline it in and out. */
+.film__cast {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-5);
+  max-width: 960px;
+  padding: 0 var(--gutter) var(--space-20);
+  list-style: none;
+  text-align: center;
+}
+
+.cast-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.cast-card__role {
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-kicker);
+  line-height: 1.4;
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.cast-card__name {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: var(--weight-display);
+  line-height: 1.04;
+  letter-spacing: var(--track-display);
+  color: var(--color-ivory);
+  text-wrap: balance;
+}
+
+.cast-card__name--caps {
+  text-transform: uppercase;
+}
+
+.cast-card__note {
+  display: none;
+}
+
+/* The logo that closes the hero, a link to directions */
+.cast-card__logo {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  color: var(--color-gold);
+  transition: color var(--duration-ui) var(--ease-out);
+}
+
+/* The logo file keeps a clear margin round the drawing (most of it below);
+   the label tucks up into it */
+.cast-card__logo img {
+  width: min(10rem, 40vw);
+  height: auto;
+  margin-bottom: -14%;
+}
+
+.cast-card__logo:hover {
+  color: var(--color-ivory);
+}
+
+.cast-card__directions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-kicker);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+}
+
+.cast-card__directions svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .film:is(.is-loading-sequence, .has-sequence) .film__cast {
+    position: absolute;
+    inset: 0;
+    display: block;
+    max-width: none;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  /* Credits float free on the film: no panel. Their kicker and paragraph
+     strokes draw with the credit (--ink follows --cast-t). Each credit
+     moves on transform and opacity alone, on its own GPU layer with its
+     shadow drawn into it once, so scrolling never repaints the text. */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card {
+    --cast-t: 0;
+    --ink: var(--cast-t);
+    position: absolute;
+    top: 50%;
+    width: min(40rem, 44vw);
+    gap: var(--space-2);
+    opacity: var(--cast-t);
+    text-shadow: 0 2px 16px var(--color-night-a85);
+    will-change: transform, opacity;
+  }
+
+  /* Solid lettering lifted off the film by a plain shadow: a tight one
+     for crisp edges and a wide one for depth */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__name {
+    font-size: var(--text-cast);
+    line-height: 1.02;
+    text-shadow:
+      0 2px 4px var(--color-night-a85),
+      0 8px 32px var(--color-night-a85);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__note {
+    display: block;
+    max-width: 34ch;
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: var(--color-cream-a90);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--left {
+    left: max(var(--gutter), 6vw);
+    align-items: flex-start;
+    text-align: left;
+    transform: translate3d(calc((var(--cast-t) - 1) * var(--space-5)), -50%, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right {
+    right: max(var(--gutter), 6vw);
+    align-items: flex-end;
+    text-align: right;
+    transform: translate3d(calc((1 - var(--cast-t)) * var(--space-5)), -50%, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center {
+    left: 50%;
+    width: min(46rem, calc(100% - 2 * var(--gutter)));
+    align-items: center;
+    text-align: center;
+    transform: translate3d(-50%, calc(-50% + (1 - var(--cast-t)) * var(--space-3)), 0);
+  }
+
+  /* The closing logo fills the empty upper part of the last shot, rising
+     and settling in as the film ends; it stays clickable although the
+     credits otherwise let taps through to the film */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--logo {
+    top: max(var(--space-8), 8svh);
+    left: 50%;
+    width: auto;
+    transform: translate3d(-50%, calc((1 - var(--cast-t)) * var(--space-3)), 0) scale(calc(0.9 + 0.1 * var(--cast-t)));
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__logo {
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__logo img {
+    width: min(13rem, 26svh, 52vw);
+  }
+
+  /* Strokes follow the credit's side: kicker underline and paragraph rule
+     run from the right on right-hand credits, from the centre on the last */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .cast-card__role::after {
+    transform-origin: right;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .cast-card__buy {
+    justify-content: flex-end;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .stroke-p {
+    padding-inline: 0 var(--space-3);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .stroke-p::before {
+    inset-inline: auto 0;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center .cast-card__role::after {
+    transform-origin: center;
+  }
+}
+
+/* Phones and small tablets: credits in the lower third, still swapping
+   sides, kept clear of the floating buttons along the bottom edge */
+@media (prefers-reduced-motion: no-preference) and (max-width: 900px) {
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--left,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center {
+    top: auto;
+    bottom: calc(var(--space-12) + env(safe-area-inset-bottom, 0px));
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__name {
+    font-size: clamp(2.5rem, 9vw, 4.5rem);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--left {
+    transform: translate3d(calc((var(--cast-t) - 1) * var(--space-3)), 0, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right {
+    transform: translate3d(calc((1 - var(--cast-t)) * var(--space-3)), 0, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center {
+    transform: translate3d(0, calc((1 - var(--cast-t)) * var(--space-2)), 0);
+  }
+}
+
+/* Short viewports (landscape phones): the centered column can outgrow 100svh,
+   so retire the indicator before it can crowd the title. */
+@media (max-height: 480px) {
+  .hero__scroll {
+    display: none;
+  }
+
+  .hero__content {
+    padding-block: var(--space-12) var(--space-3);
+  }
+
+  .film__cast {
+    padding-bottom: var(--space-6);
+  }
+}
+
+/* One-time entrance; `backwards` fill so the rest state stays in the
+   stylesheet and never ends at opacity 0 */
+.js .site-header {
+  animation: hero-rise 1s var(--ease-out) 0.1s backwards;
+}
+
+.js .hero__eyebrow {
+  animation: hero-rise 1s var(--ease-out) 0.35s backwards;
+}
+
+.js .hero__title {
+  animation: hero-rise 1.1s var(--ease-out) 0.5s backwards;
+}
+
+/* The headline's underline draws once the title has landed */
+/* The kicker's side strokes draw outward from the words once they land */
+.js .hero__eyebrow::before,
+.js .hero__eyebrow::after {
+  animation: stroke-draw 1s var(--ease-out) 1.1s backwards;
+}
+
+@keyframes stroke-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.js .hero__scroll {
+  animation: hero-fade 1.2s var(--ease-out) 1.1s backwards;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-beam {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  65%,
+  100% {
+    transform: translateY(100%);
+  }
+}

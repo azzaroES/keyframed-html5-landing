@@ -1,0 +1,32 @@
+/* Assembly on scroll
+   Each section's pieces compose into place from the sides as they rise to
+   the middle of the screen: low-key, a short slide and a fade, scrubbed by
+   the scroll (the JS writes --assemble, 0 to 1; data-from picks the
+   side). With no value set (no JS, motion off) everything sits in place.
+   ========================================================================== */
+
+[data-reveal] {
+  --from-x: -1;
+  --from-y: 0;
+}
+
+[data-from="right"] {
+  --from-x: 1;
+}
+
+[data-from="up"] {
+  --from-x: 0;
+  --from-y: 1;
+}
+
+/* Transform and opacity only, on their own compositor layers, so the
+   slide never repaints the page */
+.js [data-reveal] {
+  opacity: calc(0.15 + 0.85 * var(--assemble, 1));
+  transform: translate3d(
+    calc((1 - var(--assemble, 1)) * var(--from-x) * var(--space-6)),
+    calc((1 - var(--assemble, 1)) * var(--from-y) * var(--space-4)),
+    0
+  );
+  will-change: transform, opacity;
+}

@@ -1,0 +1,102 @@
+/* WhatsApp: a small gold button bottom left. Opening it lets the two chats
+   rise out of it, stacked upward as round initial profiles overlapping
+   slightly, with no panel around them; the button keeps its icon. Each
+   profile is named in a tooltip beside it on hover or keyboard focus. */
+.wa {
+  position: fixed;
+  left: calc(var(--space-3) + env(safe-area-inset-left, 0px));
+  bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  z-index: 24;
+}
+
+.wa__button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-gold);
+  color: var(--color-crust);
+  list-style: none;
+  cursor: pointer;
+  box-shadow: 0 12px 32px -8px var(--color-shadow-a60);
+  transition: transform var(--duration-ui) var(--ease-out);
+}
+
+.wa__button::-webkit-details-marker {
+  display: none;
+}
+
+.wa__button:hover,
+.wa[open] .wa__button {
+  transform: scale(1.06);
+}
+
+.wa__icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* The profiles stand on the button, centred over it, nearest first */
+.wa__menu {
+  position: absolute;
+  bottom: calc(100% + var(--space-1));
+  left: 4px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+.wa__avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-crust);
+  box-shadow:
+    0 0 0 2px var(--color-gold),
+    0 8px 24px -8px var(--color-shadow-a60);
+  color: var(--color-gold);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: var(--weight-display);
+  letter-spacing: 0.02em;
+  transition: transform var(--duration-ui) var(--ease-out);
+}
+
+.wa__avatar + .wa__avatar {
+  margin-bottom: calc(var(--space-1) * -1);
+}
+
+.wa__avatar--dev {
+  background-color: var(--color-night);
+  color: var(--color-ivory);
+}
+
+/* Rising out of the button: each starts down on it, small and clear, and
+   slides up into place, the second a beat later (transform and opacity
+   only, so the GPU runs it) */
+.wa[open] .wa__avatar {
+  animation: wa-rise 0.38s var(--ease-out) backwards;
+}
+
+.wa[open] .wa__avatar + .wa__avatar {
+  animation-delay: 0.07s;
+}
+
+@keyframes wa-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--space-6), 0) scale(0.5);
+  }
+}
+
+.wa__avatar:hover,
+.wa__avatar:focus-visible {
+  z-index: 1;
+  transform: scale(1.1);
+}

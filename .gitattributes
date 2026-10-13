@@ -1,0 +1,6 @@
+# Text files are stored with LF line endings; images are binary
+* text=auto eol=lf
+*.webp binary
+*.png binary
+*.jpg binary
+*.zip binary

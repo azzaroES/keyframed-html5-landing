@@ -1,0 +1,89 @@
+/* Design tokens
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* Palette */
+  --color-crust: #2C1810;        /* primary deep fried-crust brown         */
+  --color-gold: #C9A962;         /* secondary rich gold                    */
+  --color-cream: #F5F0E8;        /* accent warm cream                      */
+  --color-ivory: #FEFDFB;        /* text on dark surfaces                  */
+  --color-night: #1A1A1A;        /* near-black hero / cta / footer surface */
+  --color-bronze: #7A5E2A;       /* AA-safe "gold" for small text on cream */
+  --color-crust-soft: #46342A;   /* softer body text on cream (10:1)       */
+  --color-error: #E6A28F;        /* error text on dark                     */
+  --color-error-strong: #A33A22; /* error text on light (6:1 on cream)     */
+
+  /* Alpha variants (the only other place colour values may appear) */
+  --color-gold-a08: rgba(201, 169, 98, 0.08);
+  --color-gold-a12: rgba(201, 169, 98, 0.12);
+  --color-gold-a20: rgba(201, 169, 98, 0.2);
+  --color-gold-a35: rgba(201, 169, 98, 0.35);
+  --color-gold-a55: rgba(201, 169, 98, 0.55);
+  --color-cream-a05: rgba(245, 240, 232, 0.05);
+  --color-cream-a12: rgba(245, 240, 232, 0.12);
+  --color-cream-a45: rgba(245, 240, 232, 0.45);
+  --color-cream-a60: rgba(245, 240, 232, 0.6);
+  --color-cream-a90: rgba(245, 240, 232, 0.9);
+  --color-ivory-a90: rgba(254, 253, 251, 0.9);
+  --color-night-a25: rgba(26, 26, 26, 0.25);
+  --color-night-a45: rgba(26, 26, 26, 0.45);
+  --color-night-a90: rgba(26, 26, 26, 0.9);
+  --color-crust-a12: rgba(44, 24, 16, 0.12);
+  --color-crust-a20: rgba(44, 24, 16, 0.2);
+  --color-crust-a45: rgba(44, 24, 16, 0.45);
+  --color-night-a85: rgba(26, 26, 26, 0.85);
+  --color-shadow-a60: rgba(15, 10, 7, 0.6);
+
+  /* Spacing — 8px grid */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-15: 120px;
+  --space-20: 160px;
+  /* Fluid section padding: 96px on small screens up to 160px on wide ones */
+  --space-section: clamp(var(--space-12), 6vw + var(--space-8), var(--space-20));
+  --gutter: clamp(var(--space-2), 5vw, var(--space-5));
+
+  /* Typography */
+  /* Bold readable titles, airy light paragraphs, hairline kickers */
+  --font-display: "Archivo", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Lexend", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --weight-display: 800;
+  --weight-body: 350;
+  --weight-kicker: 300;
+  --weight-ui: 500;
+  --text-hero: clamp(3.5rem, 0.5rem + 10.5vw, 10.5rem);
+  --text-h2: clamp(2.75rem, 1.6rem + 4.6vw, 6rem);
+  --text-h3: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  --text-cast: clamp(2.5rem, 6.2vw, 6rem);
+  --text-body-lg: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+  --text-body: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-small: 0.9375rem;
+  --text-kicker: clamp(0.875rem, 0.8rem + 0.3vw, 1.0625rem);
+  --text-micro: 0.75rem;
+  --leading-body: 1.85;
+  --track-body: 0.015em;
+  --track-display: -0.015em;
+  --track-hero: -0.025em;
+  --track-kicker: 0.3em;
+  --track-wider: 0.42em;
+
+  /* Layout */
+  --width-content: 1160px;
+  /* Film scrub tracks: one pinned viewport plus the rest as travel, so each
+     credit holds for most of a screen's worth of scrolling */
+  --scrub-hero: 600vh;
+  --scrub-menu: 520vh;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-ui: 0.45s;
+}

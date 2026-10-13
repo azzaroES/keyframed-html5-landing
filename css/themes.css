@@ -1,0 +1,75 @@
+/* Section themes
+   Each theme only swaps custom properties, so section rules never need to
+   out-specify one another.
+   ========================================================================== */
+
+.theme-night,
+.theme-crust,
+.theme-cream {
+  background-color: var(--surface);
+  color: var(--on-surface);
+}
+
+.theme-night,
+.theme-crust {
+  --on-surface: var(--color-ivory);
+  --on-surface-soft: var(--color-cream-a90);
+  --accent-ink: var(--color-gold);
+  --focus-ring: var(--color-gold);
+  --rule: var(--color-gold-a20);
+  --hairline: var(--color-cream-a12);
+  --field-line: var(--color-cream-a45);
+  --error-ink: var(--color-error);
+}
+
+.theme-night {
+  --surface: var(--color-night);
+}
+
+.theme-crust {
+  --surface: var(--color-crust);
+}
+
+.theme-cream {
+  --surface: var(--color-cream);
+  --on-surface: var(--color-crust);
+  --on-surface-soft: var(--color-crust-soft);
+  --accent-ink: var(--color-bronze);
+  --focus-ring: var(--color-bronze);
+  --rule: var(--color-crust-a20);
+  --hairline: var(--color-crust-a12);
+  --field-line: var(--color-crust-a45);
+  --error-ink: var(--color-error-strong);
+}
+
+/* Light theme ("Tema claro" in the accessibility panel): every section but
+   the films takes a light surface; the films stay dark footage */
+:root.a11y-light {
+  color-scheme: light;
+}
+
+.a11y-light body {
+  background-color: var(--color-cream);
+}
+
+.a11y-light :is(.theme-night, .theme-crust):not(.film) {
+  --surface: var(--color-ivory);
+  --on-surface: var(--color-crust);
+  --on-surface-soft: var(--color-crust-soft);
+  --accent-ink: var(--color-bronze);
+  --focus-ring: var(--color-bronze);
+  --rule: var(--color-crust-a20);
+  --hairline: var(--color-crust-a12);
+  --field-line: var(--color-crust-a45);
+  --error-ink: var(--color-error-strong);
+}
+
+.a11y-light .cta.theme-night {
+  --surface: var(--color-cream);
+}
+
+.order,
+.pillars,
+.cta {
+  padding-block: var(--space-section);
+}

@@ -1,0 +1,118 @@
+/* Order: type and actions only, the phone number set large
+   ========================================================================== */
+
+.order__inner {
+  text-align: center;
+}
+
+.order__copy {
+  margin: var(--space-4) auto 0;
+  max-width: 46ch;
+  font-size: var(--text-body-lg);
+  line-height: 1.95;
+  color: var(--on-surface-soft);
+}
+
+.order__copy a {
+  font-weight: var(--weight-ui);
+  color: var(--on-surface);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.order__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+.order__phone {
+  margin-top: var(--space-5);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.1rem + 3vw, 3.5rem);
+  font-weight: var(--weight-display);
+  line-height: 1.1;
+  letter-spacing: var(--track-display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Phones: the buttons side by side and tighter spacing, so the page fits
+   a short screen and is uncovered whole */
+@media (max-width: 599px) {
+  .order__copy {
+    margin-top: var(--space-3);
+    line-height: 1.75;
+  }
+
+  .order__actions {
+    gap: var(--space-1);
+    margin-top: var(--space-4);
+  }
+
+  .order__actions .button {
+    padding-inline: var(--space-2);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+  }
+
+  .order__phone {
+    margin-top: var(--space-3);
+  }
+}
+
+.order__phone a {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  color: var(--on-surface);
+  transition: color var(--duration-ui) var(--ease-out);
+}
+
+.order__phone a:hover {
+  color: var(--accent-ink);
+}
+
+/* The order section's phone number glows twice as it lands: a gold halo
+   behind the digits fades in and out (opacity) while the number swells
+   slightly (transform). The GPU runs both; the digits never repaint. */
+.order__phone.is-flash a {
+  animation: phone-swell 1.1s var(--ease-out);
+}
+
+.order__phone.is-flash a::before {
+  content: "";
+  position: absolute;
+  inset: -0.2em -0.5em;
+  z-index: -1;
+  background-image: radial-gradient(closest-side, var(--color-gold-a55), transparent);
+  opacity: 0;
+  animation: phone-glow 1.1s var(--ease-out);
+  pointer-events: none;
+}
+
+@keyframes phone-swell {
+  20%,
+  60% {
+    transform: scale(1.04);
+  }
+
+  40%,
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes phone-glow {
+  20%,
+  60% {
+    opacity: 1;
+  }
+
+  40%,
+  100% {
+    opacity: 0;
+  }
+}
