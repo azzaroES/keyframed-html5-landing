@@ -1,0 +1,79 @@
+# ==============================================================================
+# Cariñena Kebab Tacos Pizzas — Production Security & Performance Headers
+# ==============================================================================
+
+# 1. Disable Directory Browsing
+Options -Indexes
+
+# 2. Block Access to Hidden Files, Git & Internal Documentation
+<IfModule mod_authz_core.c>
+  # Block hidden files and directories (e.g. .git, .env, .claude)
+  <FilesMatch "^\.">
+    Require all denied
+  </FilesMatch>
+
+  # Block project markdown, config & script files from direct public browser access
+  <FilesMatch "(?i)\.(md|mjs|ps1|sh|bak|config|env)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+  <FilesMatch "(?i)\.(md|mjs|ps1|sh|bak|config|env)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# 3. Security Headers
+<IfModule mod_headers.c>
+  # Clickjacking Defense: only permit framing from the same origin
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # MIME-type Sniffing Defense: force browsers to adhere to declared content types
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Referrer Privacy: never leak full paths or queries to external domains
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Hardware Feature Lockdown: disable unneeded device sensor access
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # Cross-Origin Isolation
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+
+  # HTTP Strict Transport Security (HSTS - 1 year)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+
+  # Content Security Policy (CSP) tailored for Cariñena Kebab
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+</IfModule>
+
+# 4. MIME Types & Encodings
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+</IfModule>
+
+# 5. Gzip / Brotli Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# 6. Static Asset Caching (WebP frames, SVGs, Fonts, CSS & JS)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
