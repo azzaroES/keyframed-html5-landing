@@ -103,38 +103,25 @@
       context.drawImage(image, (cssWidth - width) / 2, (cssHeight - height) / 2, width, height);
     };
 
-    /* The scroll lands between two frames: draw the earlier one and lay
-       the later one over it, as opaque as the scroll is close to it, so the
-       picture moves continuously instead of stepping from frame to frame
-       (and, while frames are still loading, blends across the gap) */
-    const BLEND_STEPS = 24;
+    /* Draw the single nearest ready frame without dual-pass blending.
+       In a 240-frame 3D rotation, each frame is only ~1.5° apart.
+       Drawing single frames prevents blurry double-exposure ghosting and cuts
+       canvas render time in half for smooth 60fps/120fps motion on mobile. */
     const drawFrame = (force, p) => {
       if (!active) {
         return;
       }
       const exact = (reverse ? 1 - p : p) * (count - 1);
-      let from = source.readyAtOrBelow(Math.floor(exact));
-      let to = source.readyAtOrAbove(Math.ceil(exact));
-      if (from === -1 && to === -1) {
+      const target = Math.round(exact);
+      const frameIndex = typeof source.readyNearest === "function" ? source.readyNearest(target) : target;
+      if (frameIndex === -1) {
         return;
       }
-      if (from === -1) {
-        from = to;
-      }
-      if (to === -1) {
-        to = from;
-      }
-      const mix = to === from ? 0 : Math.round(((exact - from) / (to - from)) * BLEND_STEPS) / BLEND_STEPS;
-      const key = `${from}:${to}:${mix}`;
-      if (key === drawnKey && !force) {
+      if (frameIndex === drawnKey && !force) {
         return;
       }
-      paint(mix < 1 ? from : to, 1);
-      if (mix > 0 && mix < 1) {
-        paint(to, mix);
-      }
-      context.globalAlpha = 1;
-      drawnKey = key;
+      paint(frameIndex, 1);
+      drawnKey = frameIndex;
     };
 
     /* A veil, if the film has one, opens its spotlight over the first
@@ -225,16 +212,29 @@
     const fit = () => {
       const box = mount.getBoundingClientRect();
       const scale = Math.min(window.devicePixelRatio || 1, MAX_SCALE);
+      const targetW = Math.max(1, Math.round(box.width * scale));
+      const targetH = Math.max(1, Math.round(box.height * scale));
+
+      /* Guard: on mobile browsers, scrolling hides or reveals the address bar,
+         causing 50-90px height fluctuations. Reassigning canvas.width/height
+         completely flushes the canvas backing store and creates visible stutter.
+         Only reallocate canvas if width changes or height changes significantly (> 120px) */
+      if (canvas.width > 0 && Math.abs(canvas.width - targetW) < 4 && Math.abs(canvas.height - targetH) < 120) {
+        cssWidth = box.width;
+        cssHeight = box.height;
+        return;
+      }
+
       cssWidth = box.width;
       cssHeight = box.height;
-      canvas.width = Math.max(1, Math.round(box.width * scale));
-      canvas.height = Math.max(1, Math.round(box.height * scale));
+      canvas.width = targetW;
+      canvas.height = targetH;
       context.setTransform(scale, 0, 0, scale, 0, 0);
       /* Only a running film's canvas is the pinned stage's size */
       if (active) {
         source.fitTo(cssWidth, cssHeight, scale);
       }
-      drawnKey = "";
+      drawnKey = -1;
       /* A resize or rotation changes the track's travel, so progress()
          moved: re-sync the copy with the redrawn frame right away. */
       const p = active ? progress() : 0;

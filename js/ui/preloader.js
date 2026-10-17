@@ -13,7 +13,7 @@
      a moment at least, so the fill is seen, and never longer than 12s.
      Runs after the films start (main.js), so it can tell whether they do.
      ---------------------------------------------------------------------- */
-  const FRAMES_TO_OPEN = 32;
+  const FRAMES_TO_OPEN = 60;
   const MIN_SHOW = 900;
   const MAX_WAIT = 12000;
 

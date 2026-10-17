@@ -45,15 +45,26 @@
 
     const frames = [];
     const listeners = [];
-    const order = [0, count - 1];
-    for (let i = 8; i < count - 1; i += 8) {
-      order.push(i);
-    }
-    for (let i = 0; i < count; i += 1) {
-      if (order.indexOf(i) === -1) {
+    const order = [];
+    const added = new Set();
+    const addFrame = (i) => {
+      if (i >= 0 && i < count && !added.has(i)) {
+        added.add(i);
         order.push(i);
       }
-    }
+    };
+    /* Hierarchical progressive loading:
+       Pass 0: First and last frames
+       Pass 1: Every 8th frame (full 360-degree rotation skeleton)
+       Pass 2: Every 4th frame (halves spacing across whole sequence)
+       Pass 3: Every 2nd frame (halves spacing again)
+       Pass 4: All remaining frames (complete 240-frame density) */
+    addFrame(0);
+    addFrame(count - 1);
+    for (let i = 0; i < count; i += 8) addFrame(i);
+    for (let i = 4; i < count; i += 8) addFrame(i);
+    for (let i = 2; i < count; i += 4) addFrame(i);
+    for (let i = 1; i < count; i += 2) addFrame(i);
 
     const MAX_IN_FLIGHT = 6;
     let started = false;
@@ -282,6 +293,25 @@
       }
     };
 
+    /* The closest frame ready to the target index (O(1) fast-path) */
+    const readyNearest = (target) => {
+      const clamped = Math.max(0, Math.min(count - 1, target));
+      if (frames[clamped] && frames[clamped].ready) {
+        return clamped;
+      }
+      for (let delta = 1; delta < count; delta += 1) {
+        const down = clamped - delta;
+        if (down >= 0 && frames[down] && frames[down].ready) {
+          return down;
+        }
+        const up = clamped + delta;
+        if (up < count && frames[up] && frames[up].ready) {
+          return up;
+        }
+      }
+      return -1;
+    };
+
     /* The nearest frame ready at or below (step -1) or at or above (+1) */
     const readyFrom = (index, step) => {
       for (let i = index; i >= 0 && i < count; i += step) {
@@ -297,6 +327,7 @@
       isAborted: () => aborted,
       /* A kept slice or the whole image; either draws the same cover crop */
       image: (index) => frames[index].bitmap || frames[index].img,
+      readyNearest,
       readyAtOrBelow: (index) => readyFrom(index, -1),
       readyAtOrAbove: (index) => readyFrom(index, 1),
       subscribe: (listener) => {
@@ -327,10 +358,9 @@
             scale: Math.min(window.devicePixelRatio || 1, window.BOK.isTouch ? 1.5 : 2),
           };
         }
-        keepBitmaps =
-          typeof window.createImageBitmap === "function" &&
-          window.matchMedia("(max-width: 720px)").matches &&
-          view.height > view.width;
+        /* Keep bitmaps disabled: 720p WebPs decode asynchronously and cleanly
+           via native HTMLImageElement without recutAll() discarding memory on mobile scroll */
+        keepBitmaps = false;
         pump();
       },
     };
