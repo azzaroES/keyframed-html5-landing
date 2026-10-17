@@ -1,0 +1,186 @@
+/* Films · Cast Cards
+   Billing-block card layout, credit typography, and closing brand poster card
+   ========================================================================== */
+
+.film__cast {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-5);
+  max-width: 960px;
+  padding: 0 var(--gutter) var(--space-20);
+  list-style: none;
+  text-align: center;
+}
+
+.cast-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.cast-card__role {
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-kicker);
+  line-height: 1.4;
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.cast-card__name {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: var(--weight-display);
+  line-height: 1.04;
+  letter-spacing: var(--track-display);
+  color: var(--color-ivory);
+  text-wrap: balance;
+}
+
+.cast-card__name--caps {
+  text-transform: uppercase;
+}
+
+.cast-card__note {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------
+   Closing Poster Card (Brand Logo + Kebab + Address + Directions)
+   ------------------------------------------------------------------------- */
+.cast-card--closing {
+  pointer-events: auto;
+  gap: var(--space-3);
+}
+
+.cast-card--closing .cast-card__logo {
+  display: block;
+  color: var(--color-gold);
+  pointer-events: auto;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-ui) var(--ease-out), transform var(--duration-ui) var(--ease-out);
+}
+
+.cast-card--closing .cast-card__logo img {
+  display: block;
+  width: clamp(140px, 18vw, 210px);
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 28px rgba(238, 88, 98, 0.45));
+  transition: transform var(--duration-ui) var(--ease-out), filter var(--duration-ui) var(--ease-out);
+}
+
+.cast-card--closing .cast-card__logo:hover img {
+  transform: scale(1.06);
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 40px rgba(238, 88, 98, 0.75));
+}
+
+.cast-card--closing .cast-card__center-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.cast-card--closing .cast-card__name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 5.8rem);
+  font-weight: var(--weight-display);
+  line-height: 0.98;
+  letter-spacing: var(--track-display);
+  color: #ffffff;
+  text-shadow:
+    0 2px 4px var(--color-night-a85),
+    0 8px 32px var(--color-night-a85);
+  margin-top: 0;
+}
+
+.cast-card--closing .cast-card__note {
+  font-style: normal;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.4;
+  color: #ffffff;
+  max-width: 100%;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.cast-card--closing .cast-card__note.stroke-p--center {
+  padding-bottom: var(--space-2);
+}
+
+.cast-card--closing .cast-card__note.stroke-p--center::before {
+  bottom: 0;
+  height: 2px;
+  width: 52px;
+  background-color: var(--color-gold);
+  inset-inline-start: calc(50% - 26px);
+}
+
+.cast-card__meta-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin-top: 0;
+  pointer-events: auto;
+}
+
+.cast-card--closing .cast-card__role {
+  padding-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-ui);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: #f6c042;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.cast-card--closing .cast-card__role::after {
+  display: none;
+}
+
+.cast-card__meta-sep {
+  color: #f6c042;
+  font-size: 0.95rem;
+  line-height: 1;
+  user-select: none;
+  opacity: 0.8;
+}
+
+.cast-card__directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-ui);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: #f6c042;
+  text-decoration: none;
+  pointer-events: auto;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+.cast-card__directions:hover {
+  color: var(--color-ivory);
+  transform: translateY(-1px);
+}
+
+.cast-card__directions svg {
+  width: 14px;
+  height: 14px;
+  color: #f6c042;
+  flex-shrink: 0;
+}

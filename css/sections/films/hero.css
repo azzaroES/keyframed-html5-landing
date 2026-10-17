@@ -1,0 +1,178 @@
+/* Films · Hero Intro
+   Hero content typography, eyebrow strokes, scroll cue and entrance keyframes
+   ========================================================================== */
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1440px;
+  text-align: center;
+  padding-block: var(--space-15) var(--space-5);
+}
+
+/* Eyebrow kicker with gold accent strokes */
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: 0;
+  color: var(--color-gold);
+}
+
+.hero__eyebrow::before,
+.hero__eyebrow::after {
+  content: "";
+  position: static;
+  width: 48px;
+  height: 2px;
+  background-color: var(--color-gold);
+  transform-origin: right;
+}
+
+.hero__eyebrow::after {
+  transform-origin: left;
+}
+
+/* Bold hero headline capped to viewport height */
+.hero__title {
+  margin-top: var(--space-3);
+  font-size: var(--text-hero);
+  font-size: min(var(--text-hero), 18vh);
+  font-size: min(var(--text-hero), 18svh);
+  letter-spacing: var(--track-hero);
+  color: var(--color-ivory);
+}
+
+/* Hero scroll indicator */
+.hero__scroll {
+  position: absolute;
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-cream-a60);
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    opacity 0.6s var(--ease-out),
+    visibility 0.6s;
+}
+
+.hero__scroll:hover {
+  color: var(--color-gold);
+}
+
+.hero__scroll.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero__scroll-label,
+.scroll-cue__label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-kicker);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+}
+
+.hero__scroll-line,
+.scroll-cue__line {
+  position: relative;
+  width: 1px;
+  height: 48px;
+  overflow: hidden;
+  background-color: var(--hairline, var(--color-cream-a12));
+}
+
+.hero__scroll-line::after,
+.scroll-cue__line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background-image: linear-gradient(180deg, transparent, var(--color-gold) 40%, var(--color-gold) 60%, transparent);
+  transform: translateY(-100%);
+  animation: scroll-beam 2.8s ease-in-out infinite;
+}
+
+/* Short viewports (landscape phones) */
+@media (max-height: 480px) {
+  .hero__scroll {
+    display: none;
+  }
+
+  .hero__content {
+    padding-block: var(--space-12) var(--space-3);
+  }
+
+  .film__cast {
+    padding-bottom: var(--space-6);
+  }
+}
+
+/* One-time entrance keyframes */
+.js .site-header {
+  animation: hero-rise 1s var(--ease-out) 0.1s backwards;
+}
+
+.js .hero__eyebrow {
+  animation: hero-rise 1s var(--ease-out) 0.35s backwards;
+}
+
+.js .hero__title {
+  animation: hero-rise 1.1s var(--ease-out) 0.5s backwards;
+}
+
+.js .hero__eyebrow::before,
+.js .hero__eyebrow::after {
+  animation: stroke-draw 1s var(--ease-out) 1.1s backwards;
+}
+
+.js .hero__scroll {
+  animation: hero-fade 1.2s var(--ease-out) 1.1s backwards;
+}
+
+@keyframes stroke-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-beam {
+  0% {
+    transform: translateY(-100%);
+  }
+  65%,
+  100% {
+    transform: translateY(100%);
+  }
+}

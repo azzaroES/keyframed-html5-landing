@@ -1,28 +1,12 @@
-/* BOK FOOD · Films (deferred; runs before js/main.js) */
+/* BOK FOOD · Film Controller (deferred; runs before js/main.js)
+   Controls scroll-driven frame scrubbing, canvas cover-crop drawing,
+   and synchronized copy/cast card transitions.
+   ========================================================================== */
 
 (() => {
   "use strict";
   const { prefersReducedMotion, onMotionChange, getFrameSource, isTouch, onFrame, requestFrame } = window.BOK;
 
-  /* -------------------------------------------------------------------------
-     FILMS — scroll-driven scrubs
-     -------------------------------------------------------------------------
-     Each .film scrubs the frame set declared on it (data-frame-*) through its
-     .film__canvas, forwards or, with data-frame-reverse, backwards. Once the
-     film's first frame decodes, .has-sequence stretches the section into a
-     scroll track (the CSS), the stage pins, and scroll progress maps to a
-     frame drawn cover-cropped at device pixel ratio (capped 2x, 1.5x on
-     touch screens); the nearest loaded frame stands in for any still on its
-     way. The same progress plays the credits ([data-cast-start/end] items)
-     by writing --cast-t, which moves them on transform and opacity only.
-     While the first frame loads, .is-loading-sequence keeps the credits out
-     of flow so the static layout never flashes; past 8s the static layout
-     shows until the frame arrives.
-     A film never starts (staying one viewport tall with static credits)
-     without JS, with motion off or Save-Data, or if loading fails, and it
-     unwinds live when motion is switched off. onLayoutChange tells the
-     parallax module the document height changed.
-     ---------------------------------------------------------------------- */
   const initFilm = (film, onLayoutChange) => {
     const relayout = typeof onLayoutChange === "function" ? onLayoutChange : () => {};
     const stage = film.querySelector(".film__stage");
@@ -30,11 +14,11 @@
     const canvas = film.querySelector(".film__canvas");
     const title = film.querySelector(".film__title");
     const veil = film.querySelector(".film__veil");
+
     if (!stage || !mount || !canvas || typeof canvas.getContext !== "function") {
       return;
     }
-    /* Opaque: every frame covers the whole canvas, and an opaque layer lets
-       the browser skip drawing whatever sits behind it */
+
     const context = canvas.getContext("2d", { alpha: false });
     if (!context) {
       return;
@@ -44,9 +28,11 @@
     const base = film.dataset.frameBase || "";
     const pad = parseInt(film.dataset.framePad || "3", 10);
     const ext = film.dataset.frameExt || ".webp";
+
     if (base === "" || !Number.isFinite(count) || count < 2) {
       return;
     }
+
     const reverse = film.hasAttribute("data-frame-reverse");
     const firstFrame = reverse ? count - 1 : 0;
     const source = getFrameSource(base, count, pad, ext);
@@ -62,15 +48,12 @@
 
     let active = false;
     let failed = false;
-    let drawnKey = "";
+    let drawnKey = -1;
     let cssWidth = 0;
     let cssHeight = 0;
-    /* Last values written, so a frame only touches what changed */
     let lastSpot = "";
     let lastTitle = "";
 
-    /* overflow: clip mirrors the @supports gate on the pinned track in
-       the CSS: without it the sticky stage cannot pin. */
     const sequenceAllowed = () =>
       !failed &&
       !source.isAborted() &&
@@ -78,11 +61,9 @@
       Boolean(window.CSS && CSS.supports("overflow", "clip")) &&
       !(navigator.connection && navigator.connection.saveData);
 
-    /* 0 at the top of the track, 1 when the stage unpins. A film tucked
-       under the page before it (data-uncover, see the paging CSS) spends
-       its first screen being uncovered, so the scrub starts after it. */
     const uncovers = film.hasAttribute("data-uncover");
     const isTucked = () => uncovers && active && (parseFloat(window.getComputedStyle(film).marginTop) || 0) < -10;
+
     const progress = (rect = film.getBoundingClientRect()) => {
       const lead = isTucked() ? stage.offsetHeight : 0;
       const travel = film.offsetHeight - stage.offsetHeight - lead;
@@ -92,21 +73,25 @@
       return Math.min(1, Math.max(0, (-rect.top - lead) / travel));
     };
 
-    const paint = (index, alpha) => {
+    /* -------------------------------------------------------------------------
+       1. Frame Painting & Rendering
+       ------------------------------------------------------------------------- */
+    const paint = (index) => {
       const image = source.image(index);
+      if (!image) {
+        return;
+      }
       const imageWidth = image.naturalWidth || image.width;
       const imageHeight = image.naturalHeight || image.height;
+      if (!imageWidth || !imageHeight) {
+        return;
+      }
       const scale = Math.max(cssWidth / imageWidth, cssHeight / imageHeight);
       const width = imageWidth * scale;
       const height = imageHeight * scale;
-      context.globalAlpha = alpha;
       context.drawImage(image, (cssWidth - width) / 2, (cssHeight - height) / 2, width, height);
     };
 
-    /* Draw the single nearest ready frame without dual-pass blending.
-       In a 240-frame 3D rotation, each frame is only ~1.5° apart.
-       Drawing single frames prevents blurry double-exposure ghosting and cuts
-       canvas render time in half for smooth 60fps/120fps motion on mobile. */
     const drawFrame = (force, p) => {
       if (!active) {
         return;
@@ -120,18 +105,18 @@
       if (frameIndex === drawnKey && !force) {
         return;
       }
-      paint(frameIndex, 1);
+      paint(frameIndex);
       drawnKey = frameIndex;
     };
 
-    /* A veil, if the film has one, opens its spotlight over the first
-       stretch of the scrub; the title card bows out just behind it; each
-       credit then fades, slides and strokes in and out across its own
-       window, and one that ends at 1 holds to the end. */
+    /* -------------------------------------------------------------------------
+       2. Copy & Cast Animation
+       ------------------------------------------------------------------------- */
     const SPOT_SPAN = 0.07;
     const TITLE_START = 0.03;
     const TITLE_SPAN = 0.06;
-    const CAST_FADE = 0.28; /* share of a credit's window spent fading each way */
+    const CAST_FADE = 0.28;
+
     const styleCopy = (p) => {
       if (veil) {
         if (active) {
@@ -146,6 +131,7 @@
           lastSpot = "";
         }
       }
+
       if (title) {
         if (active) {
           const exit = Math.min(1, Math.max(0, (p - TITLE_START) / TITLE_SPAN));
@@ -161,6 +147,7 @@
           lastTitle = "";
         }
       }
+
       cast.forEach((credit) => {
         const style = credit.el.style;
         if (!active) {
@@ -182,8 +169,9 @@
       });
     };
 
-    /* In the shared frame loop: measure where the film is (one layout read),
-       then draw and restyle. A film well off screen is left alone. */
+    /* -------------------------------------------------------------------------
+       3. Shared Frame Loop Integration
+       ------------------------------------------------------------------------- */
     onFrame({
       read: () => {
         if (!active) {
@@ -204,21 +192,22 @@
         styleCopy(p);
       },
     });
+
     const queueScrub = requestFrame;
 
-    /* Touch screens draw at 1.5x: sharp enough on a phone, and a third
-       fewer pixels to fill on every frame than 2x */
+    /* -------------------------------------------------------------------------
+       4. Viewport Fitting & Mobile Address Bar Guard
+       ------------------------------------------------------------------------- */
     const MAX_SCALE = isTouch ? 1.5 : 2;
+
     const fit = () => {
       const box = mount.getBoundingClientRect();
       const scale = Math.min(window.devicePixelRatio || 1, MAX_SCALE);
       const targetW = Math.max(1, Math.round(box.width * scale));
       const targetH = Math.max(1, Math.round(box.height * scale));
 
-      /* Guard: on mobile browsers, scrolling hides or reveals the address bar,
-         causing 50-90px height fluctuations. Reassigning canvas.width/height
-         completely flushes the canvas backing store and creates visible stutter.
-         Only reallocate canvas if width changes or height changes significantly (> 120px) */
+      /* Guard: Ignore mobile address bar micro-shifts (< 120px) to prevent
+         flushing the canvas backing store during scroll */
       if (canvas.width > 0 && Math.abs(canvas.width - targetW) < 4 && Math.abs(canvas.height - targetH) < 120) {
         cssWidth = box.width;
         cssHeight = box.height;
@@ -230,13 +219,8 @@
       canvas.width = targetW;
       canvas.height = targetH;
       context.setTransform(scale, 0, 0, scale, 0, 0);
-      /* Only a running film's canvas is the pinned stage's size */
-      if (active) {
-        source.fitTo(cssWidth, cssHeight, scale);
-      }
+
       drawnKey = -1;
-      /* A resize or rotation changes the track's travel, so progress()
-         moved: re-sync the copy with the redrawn frame right away. */
       const p = active ? progress() : 0;
       drawFrame(true, p);
       lastSpot = "";
@@ -244,12 +228,9 @@
       styleCopy(p);
     };
 
-    /* Growing or collapsing the scroll track shifts everything below the
-       film by several viewports. When the viewport is already past the
-       film, re-anchor it on the next section so the toggle is invisible even
-       in browsers without scroll anchoring. Measuring the neighbour's
-       residual shift (instead of the raw height delta) avoids
-       double-compensating where the browser anchors on its own. */
+    /* -------------------------------------------------------------------------
+       5. Scroll Compensation & Lifecycle
+       ------------------------------------------------------------------------- */
     const withScrollCompensation = (mutate) => {
       const anchor = film.nextElementSibling;
       const filmTop = film.getBoundingClientRect().top + window.scrollY;
@@ -264,7 +245,7 @@
         try {
           window.scrollBy({ top: shift, left: 0, behavior: "instant" });
         } catch (err) {
-          window.scrollBy(0, shift); /* older engines: no "instant" enum */
+          window.scrollBy(0, shift);
         }
       }
     };
@@ -287,7 +268,7 @@
         film.classList.remove("is-loading-sequence");
         film.classList.add("has-sequence");
       });
-      mount.style.transform = ""; /* clear any fallback parallax drift */
+      mount.style.transform = "";
       relayout();
       fit();
     };
@@ -300,14 +281,13 @@
       withScrollCompensation(() => {
         film.classList.remove("has-sequence");
       });
-      drawnKey = "";
+      drawnKey = -1;
       styleCopy(0);
       relayout();
     };
 
     source.subscribe((index, ok) => {
       if (!ok) {
-        /* No opening frame, or too many holes: back to the static film */
         if (index === firstFrame || source.isAborted()) {
           failed = true;
           setLoading(false);
@@ -318,7 +298,7 @@
       if (index === firstFrame) {
         activate();
       }
-      queueScrub(); /* a nearer frame may now exist for the current position */
+      queueScrub();
     });
 
     if ("ResizeObserver" in window) {
@@ -326,6 +306,7 @@
     } else {
       window.addEventListener("resize", fit);
     }
+
     onMotionChange((event) => {
       if (event.matches) {
         deactivate();
@@ -347,7 +328,7 @@
     if (sequenceAllowed()) {
       setLoading(true);
       source.start();
-      activate(); /* a film sharing frames another film already loaded */
+      activate();
       window.setTimeout(() => {
         if (!active) {
           setLoading(false);

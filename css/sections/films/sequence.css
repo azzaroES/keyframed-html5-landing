@@ -1,0 +1,264 @@
+/* Films · Sequence
+   Active scroll-driven positioning, 3D float transitions, and responsive poster layouts
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .film:is(.is-loading-sequence, .has-sequence) .film__cast {
+    position: absolute;
+    inset: 0;
+    display: block;
+    max-width: none;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  /* Credits float over the film canvas:
+     The JS writes --cast-t (0 to 1) driving transform and opacity on GPU */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card {
+    --cast-t: 0;
+    --ink: var(--cast-t);
+    position: absolute;
+    top: 50%;
+    width: min(40rem, 44vw);
+    gap: var(--space-2);
+    opacity: var(--cast-t);
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.95), 0 0 32px rgba(0, 0, 0, 0.85);
+    will-change: transform, opacity;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__name {
+    font-size: var(--text-cast);
+    line-height: 1.02;
+    text-shadow:
+      0 2px 4px var(--color-night-a85),
+      0 8px 32px var(--color-night-a85);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__note {
+    display: block;
+    max-width: 34ch;
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: var(--color-cream-a90);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--left {
+    left: max(var(--gutter), 6vw);
+    align-items: flex-start;
+    text-align: left;
+    transform: translate3d(calc((var(--cast-t) - 1) * var(--space-5)), -50%, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right {
+    right: max(var(--gutter), 6vw);
+    align-items: flex-end;
+    text-align: right;
+    transform: translate3d(calc((1 - var(--cast-t)) * var(--space-5)), -50%, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center {
+    left: 50%;
+    width: min(46rem, calc(100% - 2 * var(--gutter)));
+    align-items: center;
+    text-align: center;
+    transform: translate3d(-50%, calc(-50% + (1 - var(--cast-t)) * var(--space-3)), 0);
+  }
+
+  /* Desktop closing poster card */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing {
+    top: 50%;
+    left: 50%;
+    width: min(54rem, calc(100% - 2 * var(--gutter)));
+    height: min(80vh, 680px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transform: translate3d(-50%, calc(-50% + (1 - var(--cast-t)) * var(--space-3)), 0) scale(calc(0.96 + 0.04 * var(--cast-t)));
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--space-2);
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo img {
+    width: clamp(170px, 19vw, 240px);
+    max-width: 250px;
+    height: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__name {
+    font-size: clamp(4.2rem, 9vw, 6.6rem);
+    color: #ffffff;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__note {
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    color: #ffffff;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__role,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions {
+    font-size: 1rem;
+    color: #f6c042 !important;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .cast-card__role::after {
+    transform-origin: right;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .cast-card__buy {
+    justify-content: flex-end;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .stroke-p {
+    padding-inline: 0 var(--space-3);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right .stroke-p::before {
+    inset-inline: auto 0;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center .cast-card__role::after {
+    transform-origin: center;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Mobile & Small Tablet Sequence Layout (max-width: 900px)
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) and (max-width: 900px) {
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--left,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center:not(.cast-card--closing) {
+    top: auto;
+    bottom: calc(var(--space-12) + env(safe-area-inset-bottom, 0px));
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card__name {
+    font-size: clamp(2.5rem, 9vw, 4.5rem);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--left {
+    transform: translate3d(calc((var(--cast-t) - 1) * var(--space-3)), 0, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--right {
+    transform: translate3d(calc((1 - var(--cast-t)) * var(--space-3)), 0, 0);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center:not(.cast-card--closing) {
+    transform: translate3d(0, calc((1 - var(--cast-t)) * var(--space-2)), 0);
+  }
+
+  /* Full-screen balanced mobile poster:
+     - Upper third: Glowing Logo
+     - Middle: Bold white Kebab + address
+     - Bottom: Golden yellow Ubicados & Cómo llegar */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing {
+    position: absolute;
+    inset: 0;
+    top: calc(var(--space-4) + env(safe-area-inset-top, 0px));
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-2) var(--space-2);
+    transform: translate3d(0, calc((1 - var(--cast-t)) * var(--space-3)), 0);
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: calc(var(--space-2) + env(safe-area-inset-top, 0px));
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo img {
+    width: clamp(170px, 48vw, 235px);
+    max-width: 245px;
+    height: auto;
+    filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 32px rgba(238, 88, 98, 0.6));
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__center-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__name {
+    font-size: clamp(3.4rem, 13vw, 4.8rem);
+    color: #ffffff;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.95),
+      0 8px 30px rgba(0, 0, 0, 0.9);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__note {
+    font-size: clamp(0.95rem, 3.4vw, 1.15rem);
+    max-width: 100%;
+    white-space: nowrap;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__meta-row {
+    margin-bottom: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    max-width: 100%;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__role,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions {
+    font-size: clamp(0.72rem, 2.4vw, 0.85rem);
+    font-weight: 700;
+    letter-spacing: clamp(0.06em, 0.15vw, 0.12em);
+    white-space: nowrap;
+    color: #f6c042 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+  }
+
+  :root.a11y-zoomed .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__role,
+  :root.a11y-zoomed .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions {
+    font-size: clamp(0.62rem, 2vw, 0.72rem);
+    letter-spacing: 0.05em;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions svg {
+    color: #f6c042 !important;
+    width: 14px;
+    height: 14px;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__meta-sep {
+    color: #f6c042 !important;
+    opacity: 0.8;
+  }
+}

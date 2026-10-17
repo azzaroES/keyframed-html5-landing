@@ -1,0 +1,119 @@
+/* Films · Stage
+   Sticky stage container, canvas mount, stage lighting, vignette, and veil
+   ========================================================================== */
+
+.film {
+  --scrub: var(--scrub-hero);
+  position: relative;
+}
+
+.film--menu {
+  --scrub: var(--scrub-menu);
+}
+
+.film__stage {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (overflow: clip) {
+    .js .film.has-sequence {
+      height: var(--scrub);
+    }
+
+    .js .film.has-sequence .film__stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      min-height: 0;
+    }
+
+    .js .film.has-sequence .film__media {
+      inset: 0;
+    }
+  }
+}
+
+.film__media {
+  position: absolute;
+  inset: -8% 0; /* overscan so gentle parallax never exposes an edge */
+  z-index: -1;
+}
+
+/* Stage lighting painted behind the canvas */
+.film__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(38% 30% at 50% 38%, var(--color-gold-a12), transparent 70%),
+    radial-gradient(55% 45% at 50% 42%, var(--color-cream-a05), transparent 72%),
+    radial-gradient(70% 28% at 50% 88%, var(--color-gold-a08), transparent 65%);
+}
+
+.film__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 16:9 frames cover-crop to the mount */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Canvas is hidden until sequence decodes and starts */
+.film:not(.has-sequence) .film__canvas {
+  visibility: hidden;
+}
+
+/* Dark cinematic vignette overlay above frames for high contrast & readability */
+.film__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: rgba(12, 10, 9, 0.32);
+  background-image:
+    radial-gradient(ellipse 70% 65% at 50% 50%, transparent 22%, rgba(12, 10, 9, 0.58) 58%, rgba(12, 10, 9, 0.95) 100%),
+    linear-gradient(180deg, rgba(12, 10, 9, 0.88) 0%, rgba(12, 10, 9, 0.35) 18%, transparent 30%, transparent 70%, rgba(12, 10, 9, 0.6) 82%, rgba(12, 10, 9, 0.96) 100%);
+}
+
+/* Opening veil spotlight */
+.film__veil {
+  display: none;
+}
+
+.film:is(.is-loading-sequence, .has-sequence) .film__veil {
+  --spot-edge: calc(var(--spot, 0) * 110vmax);
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+  background-color: var(--color-night-a90);
+  -webkit-mask-image: radial-gradient(circle at 50% 42%, transparent calc(var(--spot-edge) - 12vmax), black calc(var(--spot-edge) + 6vmax));
+  mask-image: radial-gradient(circle at 50% 42%, transparent calc(var(--spot-edge) - 12vmax), black calc(var(--spot-edge) + 6vmax));
+  opacity: calc(1 - max(0, (var(--spot, 0) - 0.6) / 0.4));
+}
+
+/* Touch screens: fade veil without expensive mask repainting */
+.is-touch .film:is(.is-loading-sequence, .has-sequence) .film__veil {
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: calc(1 - var(--spot, 0));
+  will-change: opacity;
+}
+
+.film:is(.is-loading-sequence, .has-sequence) .film__title {
+  will-change: transform, opacity;
+}
