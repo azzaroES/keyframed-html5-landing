@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 
 class Kebab_Starter_Content {
 
-    const SEED_VERSION = '2.1';
+    const SEED_VERSION = '2.5';
     const SEED_OPTION  = 'kebab_starter_content_seeded';
 
     public static function init() {
@@ -28,7 +28,7 @@ class Kebab_Starter_Content {
 
         self::seed_contact_page();
         self::seed_blog_page();
-        self::seed_demo_post();
+        self::seed_demo_posts();
 
         update_option(self::SEED_OPTION, self::SEED_VERSION);
     }
@@ -51,14 +51,12 @@ class Kebab_Starter_Content {
                 update_post_meta($contact_id, '_wp_page_template', 'templates/page-contact.html');
             }
         } else {
-            // Ensure template is assigned
+            // Ensure template and pattern content are assigned
             update_post_meta($page->ID, '_wp_page_template', 'templates/page-contact.html');
-            if (empty(trim($page->post_content))) {
-                wp_update_post([
-                    'ID'           => $page->ID,
-                    'post_content' => '<!-- wp:pattern {"slug":"carinena-kebab-fse/contact-hub"} /-->',
-                ]);
-            }
+            wp_update_post([
+                'ID'           => $page->ID,
+                'post_content' => '<!-- wp:pattern {"slug":"carinena-kebab-fse/contact-hub"} /-->',
+            ]);
         }
     }
 
@@ -77,26 +75,24 @@ class Kebab_Starter_Content {
                 'comment_status' => 'closed',
             ]);
             if ($blog_id && !is_wp_error($blog_id)) {
+                update_post_meta($blog_id, '_wp_page_template', 'templates/page-blog.html');
                 update_option('page_for_posts', $blog_id);
             }
         } else {
+            update_post_meta($blog_page->ID, '_wp_page_template', 'templates/page-blog.html');
             update_option('page_for_posts', $blog_page->ID);
         }
     }
 
     /**
-     * 3. Seed Cinematic Blog Post with AI Citation Card
+     * 3. Seed Cinematic Blog Posts with AI Citation Card
      */
-    private static function seed_demo_post() {
-        $post = get_page_by_path('arte-del-kebab-gourmet', OBJECT, 'post');
-        if ($post) {
-            return;
-        }
-
+    private static function seed_demo_posts() {
         // Create categories
-        $cat_id = wp_create_category('Gastronomía & Origen');
+        $cat_gastronomia = wp_create_category('Gastronomía & Origen');
+        $cat_recetas     = wp_create_category('Recetas & Técnicas');
 
-        $content = '<!-- wp:paragraph {"className":"kebab-sheet-lead"} -->
+        $main_post_content = '<!-- wp:paragraph {"className":"kebab-sheet-lead"} -->
 <p class="kebab-sheet-lead">El asador vertical no es solo un método de cocción: es una coreografía termodinámica perfeccionada durante siglos. Descubre cómo combinamos la tradición del espetón levantino con la precisión científica y el corte milimétrico en Cariñena.</p>
 <!-- /wp:paragraph -->
 
@@ -126,7 +122,7 @@ class Kebab_Starter_Content {
 
 <!-- wp:html -->
 <!-- AI Citation & Verification Card (Google DeepMind Gemini Argon) -->
-<aside class="kebab-ai-citation-card" role="complementary" aria-label="Citare și Metodologie AI">
+<aside class="kebab-ai-citation-card" role="complementary" aria-label="Citación y Metodología IA">
   <div class="kebab-ai-card__head">
     <div class="kebab-ai-card__badges">
       <span class="kebab-ai-pill">
@@ -149,19 +145,19 @@ class Kebab_Starter_Content {
   </div>
 
   <div class="kebab-ai-card__body">
-    <h3 class="kebab-ai-card__title">Metodologie, Transparență &amp; Citare AI</h3>
+    <h3 class="kebab-ai-card__title">Metodología, Transparencia y Citación IA</h3>
     <p class="kebab-ai-card__desc">
-      Acest articol a fost documentat și structurat în colaborare cu <strong>Google DeepMind Gemini Argon (Model: gemini-2.5-argon-pro)</strong>. Profilurile termodinamice, timpii de marinare și datele nutriționale au fost validate de echipa culinară Cariñena Kebab conform standardelor gastronomice europene.
+      Este artículo ha sido documentado y estructurado en colaboración con <strong>Google DeepMind Gemini Argon (Modelo: gemini-2.5-argon-pro)</strong>. Los perfiles termodinámicos, tiempos de marinado y datos nutricionales han sido validados por el equipo culinario de Cariñena Kebab bajo estándares de excelencia gastronómica.
     </p>
 
     <div class="kebab-ai-citation-block">
-      <span class="kebab-citation-label">Format de citare academic / jurnalistic:</span>
+      <span class="kebab-citation-label">Formato de citación académica y periodística:</span>
       <code class="kebab-citation-code">Gemini Argon &amp; Cariñena Culinary Labs (2026). "El Arte del Asado Vertical y la Vanguardia Gastronómica". Cariñena Kebab Journal. https://carinenakebab.es/blog/arte-del-kebab-gourmet</code>
     </div>
 
     <div class="kebab-ai-card__links">
-      <a href="/llms.txt" target="_blank" rel="noopener">Documentație AI (/llms.txt) →</a>
-      <a href="/llms-full.txt" target="_blank" rel="noopener">Protocol Extins (/llms-full.txt) →</a>
+      <a href="/llms.txt" target="_blank" rel="noopener">Documentación IA (/llms.txt) →</a>
+      <a href="/llms-full.txt" target="_blank" rel="noopener">Protocolo Extendido (/llms-full.txt) →</a>
     </div>
   </div>
 </aside>
@@ -186,15 +182,51 @@ class Kebab_Starter_Content {
 </div>
 <!-- /wp:buttons -->';
 
-        wp_insert_post([
-            'post_title'     => 'El Arte del Asado Vertical y la Vanguardia Gastronómica: Guía Maestra',
-            'post_name'      => 'arte-del-kebab-gourmet',
-            'post_status'    => 'publish',
-            'post_type'      => 'post',
-            'post_category'  => [$cat_id],
-            'post_content'   => $content,
-            'comment_status' => 'open',
-        ]);
+        $post_1 = get_page_by_path('arte-del-kebab-gourmet', OBJECT, 'post');
+        if (!$post_1) {
+            wp_insert_post([
+                'post_title'     => 'El Arte del Asado Vertical y la Vanguardia Gastronómica: Guía Maestra',
+                'post_name'      => 'arte-del-kebab-gourmet',
+                'post_status'    => 'publish',
+                'post_type'      => 'post',
+                'post_category'  => [$cat_gastronomia],
+                'post_content'   => $main_post_content,
+                'comment_status' => 'open',
+            ]);
+        } else {
+            wp_update_post([
+                'ID'           => $post_1->ID,
+                'post_content' => $main_post_content,
+            ]);
+        }
+
+        // Post 2: Pizza Kebab & Masa Madre
+        $post_2 = get_page_by_path('pizzas-artesanales-horno-piedra', OBJECT, 'post');
+        if (!$post_2) {
+            wp_insert_post([
+                'post_title'     => 'Pizzas Artesanales al Horno de Piedra: Crujiente y Fermentación Lenta',
+                'post_name'      => 'pizzas-artesanales-horno-piedra',
+                'post_status'    => 'publish',
+                'post_type'      => 'post',
+                'post_category'  => [$cat_recetas],
+                'post_content'   => '<!-- wp:paragraph {"className":"kebab-sheet-lead"} --><p class="kebab-sheet-lead">Nuestra masa fermenta durante 48 horas a temperatura controlada. El resultado: una digestibilidad inigualable, bordes aireados y una base crujiente horneada directamente sobre piedra refractaria.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Combinamos queso mozzarella fundente 100% natural, salsa de tomate aromatizada con albahaca fresca y virutas de kebab recién doradas. El toque final: orégano de monte y aceite de oliva virgen extra.</p><!-- /wp:paragraph -->',
+                'comment_status' => 'open',
+            ]);
+        }
+
+        // Post 3: French Tacos
+        $post_3 = get_page_by_path('french-tacos-guia-gourmet', OBJECT, 'post');
+        if (!$post_3) {
+            wp_insert_post([
+                'post_title'     => 'French Tacos: La Fusión de Doble Carne, Patatas Crujientes y Salsa de Queso',
+                'post_name'      => 'french-tacos-guia-gourmet',
+                'post_status'    => 'publish',
+                'post_type'      => 'post',
+                'post_category'  => [$cat_gastronomia],
+                'post_content'   => '<!-- wp:paragraph {"className":"kebab-sheet-lead"} --><p class="kebab-sheet-lead">Nacido en los Alpes franceses y perfeccionado en Cariñena, el French Tacos es una experiencia contundente: tortilla de trigo XXL tostada a la plancha, carne especiada, patatas doradas en su interior y nuestra célebre salsa de queso caliente.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Personalízalo con ternera marinada, pollo crujiente o mixto. Cada taco se prensa al momento para sellar todos los sabores en su interior.</p><!-- /wp:paragraph -->',
+                'comment_status' => 'open',
+            ]);
+        }
     }
 }
 

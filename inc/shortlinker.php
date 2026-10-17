@@ -47,10 +47,10 @@ class Kebab_Shortlinker {
     public static function get_default_links() {
         $nap = class_exists('Kebab_NAP_Engine') ? Kebab_NAP_Engine::get_settings() : [];
 
-        $phone = !empty($nap['phone_clean']) ? $nap['phone_clean'] : '+34976620000';
-        $wa = !empty($nap['whatsapp_clean']) ? $nap['whatsapp_clean'] : '34600000000';
-        $lat = !empty($nap['geo_lat']) ? $nap['geo_lat'] : 41.3385;
-        $lng = !empty($nap['geo_lng']) ? $nap['geo_lng'] : -1.2225;
+        $phone = !empty($nap['phone_clean']) ? $nap['phone_clean'] : '+34876653461';
+        $wa = !empty($nap['whatsapp_clean']) ? $nap['whatsapp_clean'] : '34643055102';
+        $lat = !empty($nap['geo_lat']) ? $nap['geo_lat'] : 41.3392;
+        $lng = !empty($nap['geo_lng']) ? $nap['geo_lng'] : -1.2238;
 
         return [
             'pedir'   => [

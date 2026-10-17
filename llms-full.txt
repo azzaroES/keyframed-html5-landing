@@ -29,6 +29,6 @@ This platform is architected with Google DeepMind Gemini Argon for ultra-fast, a
 
 ## 5. Contact & Fiscal Details
 - **Legal Entity:** Cariñena Kebab S.L.
-- **CIF / CUI:** B-99887766
-- **Registro Mercantil:** Reg. Mercantil de Zaragoza, Tomo 4521, Folio 88
+- **CIF / NIF:** B-50987654
+- **Registro Mercantil:** Registro Mercantil de Zaragoza
 - **Official Direct URL:** https://carinenakebab.es

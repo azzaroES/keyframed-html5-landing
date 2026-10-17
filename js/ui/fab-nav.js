@@ -41,7 +41,7 @@
     /* Off again as the footer comes in (it carries its own navigation, and
        the button would sit on its bottom line), and through the club after
        it. The footer starts right where <main> ends. */
-    const main = document.getElementById("main");
+    const main = document.getElementById("main") || document.querySelector("main") || document.querySelector(".wp-block-group") || document.body;
     const footer = document.querySelector(".site-footer");
     window.BOK.onFrame({
       read: () => {

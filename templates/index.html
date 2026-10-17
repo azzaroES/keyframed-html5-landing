@@ -1,6 +1,7 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<main id="main" tabindex="-1" class="container" style="padding-top: var(--space-64); padding-bottom: var(--space-80);">
+<!-- wp:group {"tagName":"main","className":"container","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|70"}}},"layout":{"type":"default"}} -->
+<main class="wp-block-group container" id="main" tabindex="-1">
   <!-- wp:group {"tagName":"header","className":"section-head section-head--center"} -->
   <header class="section-head section-head--center">
     <!-- wp:query-title {"type":"general","className":"section-title"} /-->
@@ -33,6 +34,7 @@
   </div>
   <!-- /wp:query -->
 </main>
+<!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
 <!-- wp:template-part {"slug":"bottom-app-bar","tagName":"nav"} /-->

@@ -71,14 +71,14 @@ class Kebab_AI_Endpoints {
         echo "> " . ($nap['description'] ?? 'Artesanía mediterránea & kebab gourmet en Cariñena.') . "\n\n";
 
         echo "## Business NAP & Identity\n";
-        echo "- **Name:** " . ($nap['name'] ?? 'Cariñena Kebab') . "\n";
+        echo "- **Name:** " . ($nap['name'] ?? 'Cariñena Kebab Tacos & Pizzas') . "\n";
         echo "- **Niche / Schema:** https://schema.org/" . ($nap['niche'] ?? 'FastFoodRestaurant') . "\n";
         echo "- **Address:** " . ($nap['street_address'] ?? 'Av. del Ejército, 28') . ", " . ($nap['postal_code'] ?? '50400') . " " . ($nap['locality'] ?? 'Cariñena') . " (" . ($nap['region'] ?? 'Zaragoza') . ", " . ($nap['country'] ?? 'ES') . ")\n";
         echo "- **Telephone:** " . ($nap['phone'] ?? '+34 876 65 34 61') . "\n";
         echo "- **WhatsApp:** " . ($nap['whatsapp'] ?? '+34 643 05 51 02') . "\n";
-        echo "- **Email:** " . ($nap['email'] ?? 'contacto@carinenakebab.es') . "\n";
-        echo "- **Geo Coordinates:** " . ($nap['geo_lat'] ?? '41.3385') . ", " . ($nap['geo_lng'] ?? '-1.2225') . "\n";
-        echo "- **CUI / CIF:** " . ($nap['cui_cif'] ?? 'B-99887766') . "\n\n";
+        echo "- **Email:** " . ($nap['email'] ?? 'pedidos@carinenakebab.es') . "\n";
+        echo "- **Geo Coordinates:** " . ($nap['geo_lat'] ?? '41.3392') . ", " . ($nap['geo_lng'] ?? '-1.2238') . "\n";
+        echo "- **CIF / NIF:** " . ($nap['cui_cif'] ?? 'B-50987654') . "\n\n";
 
         echo "## Quick Action Links\n";
         echo "- **Order via WhatsApp:** " . $site_url . "go/pedir\n";

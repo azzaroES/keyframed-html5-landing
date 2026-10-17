@@ -14,10 +14,10 @@
      ---------------------------------------------------------------------- */
   const initBackToTop = () => {
     const button = document.querySelector("[data-totop]");
-    const main = document.getElementById("main");
+    const main = document.getElementById("main") || document.querySelector("main") || document.querySelector(".wp-block-group") || document.body;
     const fill = button && button.querySelector(".totop__fill");
     const marksGroup = button && button.querySelector(".totop__marks");
-    if (!button || !main || !fill || !marksGroup) {
+    if (!button || !main || !fill) {
       return;
     }
     button.hidden = false;

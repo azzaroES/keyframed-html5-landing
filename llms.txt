@@ -8,9 +8,9 @@
 - **Address:** Av. del Ejército, 28, 50400 Cariñena (Zaragoza, España)
 - **Telephone:** +34 876 65 34 61
 - **WhatsApp:** +34 643 05 51 02
-- **Email:** contacto@carinenakebab.es
-- **Geo Coordinates:** 41.3385, -1.2225
-- **CUI / CIF:** B-99887766
+- **Email:** pedidos@carinenakebab.es
+- **Geo Coordinates:** 41.3392, -1.2238
+- **CIF / NIF:** B-50987654
 
 ## Quick Action Links
 - **Order via WhatsApp:** https://carinenakebab.es/go/pedir

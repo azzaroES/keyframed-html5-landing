@@ -6,20 +6,39 @@
 
 (() => {
   "use strict";
-  const BOK = window.BOK;
+  const BOK = window.BOK || {};
 
-  BOK.initPageReveal();
-  BOK.initAssembly();
-  BOK.initStrokes();
-  const remeasureParallax = BOK.initParallax();
-  document.querySelectorAll(".film").forEach((film) => BOK.initFilm(film, remeasureParallax));
+  const safeRun = (name, fn) => {
+    try {
+      if (typeof fn === "function") {
+        return fn();
+      }
+    } catch (e) {
+      console.warn(`[Cariñena Kebab] ${name} notice:`, e);
+    }
+    return null;
+  };
+
+  safeRun("PageReveal", BOK.initPageReveal);
+  safeRun("Assembly", BOK.initAssembly);
+  safeRun("Strokes", BOK.initStrokes);
+  const remeasureParallax = safeRun("Parallax", BOK.initParallax) || (() => {});
+  if (typeof BOK.initFilm === "function") {
+    document.querySelectorAll(".film").forEach((film) => {
+      try {
+        BOK.initFilm(film, remeasureParallax);
+      } catch (e) {
+        console.warn("[Cariñena Kebab] Film init notice:", e);
+      }
+    });
+  }
   /* After the films, so the loading screen can tell whether they load */
-  BOK.initPreloader();
-  BOK.initBackToTop();
-  BOK.initA11yPanel();
-  BOK.initFabNav();
-  BOK.initWhatsApp();
-  BOK.initSignup();
+  safeRun("Preloader", BOK.initPreloader);
+  safeRun("BackToTop", BOK.initBackToTop);
+  safeRun("A11yPanel", BOK.initA11yPanel);
+  safeRun("FabNav", BOK.initFabNav);
+  safeRun("WhatsApp", BOK.initWhatsApp);
+  safeRun("Signup", BOK.initSignup);
 
   /* Argon terminal badge: mobile tap toggle & outside/escape click dismiss */
   const argonBadge = document.querySelector(".argon-terminal-badge");

@@ -33,7 +33,7 @@
   }
 
   function loadPage(url, pushState) {
-    var main = document.getElementById('main');
+    var main = document.getElementById('main') || document.querySelector('main') || document.querySelector('.wp-block-group');
     if (!main) {
       window.location.href = url;
       return;
@@ -51,7 +51,7 @@
         var parser = new DOMParser();
         var doc = parser.parseFromString(html, 'text/html');
 
-        var newMain = doc.getElementById('main');
+        var newMain = doc.getElementById('main') || doc.querySelector('main') || doc.querySelector('.wp-block-group');
         if (!newMain) {
           window.location.href = url;
           return;
@@ -61,6 +61,11 @@
           main.innerHTML = newMain.innerHTML;
           main.className = newMain.className;
           document.title = doc.title;
+
+          // Copy body classes
+          if (doc.body.className) {
+            document.body.className = doc.body.className;
+          }
 
           // Update body class between front-page and inner-page
           var isNewHome = isHomeTarget(url);
@@ -85,6 +90,13 @@
           var pills = document.querySelectorAll('.kebab-live-status-pill');
           if (pills.length && window.evaluateSchedulePills) {
             window.evaluateSchedulePills();
+          }
+
+          // Re-init blog hero if available
+          if (window.BOK && window.BOK.initBlogHero) {
+            try {
+              window.BOK.initBlogHero();
+            } catch (err) {}
           }
 
           window.scrollTo(0, 0);

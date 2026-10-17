@@ -17,6 +17,12 @@
     var path = window.location.pathname.replace(/\/$/, '') || '/';
     var hash = window.location.hash;
 
+    var isContactPage = path.indexOf('/contact') !== -1 || path.indexOf('/contacto') !== -1 || document.body.classList.contains('page-template-page-contact');
+    var isBlogPage = path.indexOf('/blog') !== -1 || path.indexOf('/category') !== -1 || path.indexOf('/categoria') !== -1 || 
+                     document.body.classList.contains('single') || document.body.classList.contains('single-post') || 
+                     document.body.classList.contains('blog') || document.body.classList.contains('archive') ||
+                     Boolean(document.querySelector('.kebab-blog-archive-container, .kebab-pullup-hero'));
+
     links.forEach(function (link) {
       link.classList.remove('is-active');
       link.removeAttribute('aria-current');
@@ -29,12 +35,20 @@
 
       var isMatch = false;
 
-      if (linkHash && hash === linkHash) {
-        isMatch = true;
-      } else if (!linkHash) {
-        if (cleanHref === '/' && path === '/') {
+      if (linkHash) {
+        if (hash === linkHash) {
           isMatch = true;
-        } else if (cleanHref !== '/' && path.indexOf(cleanHref) === 0) {
+        }
+      } else if (cleanHref.indexOf('/contact') !== -1 || cleanHref.indexOf('/contacto') !== -1) {
+        if (isContactPage) {
+          isMatch = true;
+        }
+      } else if (cleanHref.indexOf('/blog') !== -1) {
+        if (isBlogPage && !isContactPage) {
+          isMatch = true;
+        }
+      } else if (cleanHref === '/') {
+        if ((path === '/' || path === '') && !isBlogPage && !isContactPage && (!hash || hash === '#top')) {
           isMatch = true;
         }
       }

@@ -96,25 +96,31 @@
 }
 
 .fab-nav__item:nth-child(1) {
-  --x: -70px;
-  --y: -29px;
+  --x: -74px;
+  --y: -15px;
 }
 
 .fab-nav__item:nth-child(2) {
-  --x: -29px;
-  --y: -70px;
-  --delay: 40ms;
+  --x: -54px;
+  --y: -54px;
+  --delay: 30ms;
 }
 
 .fab-nav__item:nth-child(3) {
-  --x: 29px;
-  --y: -70px;
-  --delay: 80ms;
+  --x: 0px;
+  --y: -74px;
+  --delay: 60ms;
 }
 
 .fab-nav__item:nth-child(4) {
-  --x: 70px;
-  --y: -29px;
+  --x: 54px;
+  --y: -54px;
+  --delay: 90ms;
+}
+
+.fab-nav__item:nth-child(5) {
+  --x: 74px;
+  --y: -15px;
   --delay: 120ms;
 }
 
