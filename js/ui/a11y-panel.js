@@ -49,7 +49,7 @@
       applyA11y();
       save();
       render();
-      if (prefersReducedMotion() !== wasStill) {
+      if (prefersReducedMotion() !== wasStill || ((oldSize === 0) !== (a11yState.size === 0))) {
         notifyMotion();
       }
       if (a11yState.size !== oldSize) {

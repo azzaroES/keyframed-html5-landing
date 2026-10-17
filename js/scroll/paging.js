@@ -27,11 +27,12 @@
   const current = new Map();
 
   /* How far the page holding `el` has been uncovered, 0 to 1, or null when
-     that page is not being paged (motion off, too tall, or not a page) */
+     that page is not being paged (motion off, text zoomed, too tall, or not a page) */
   const pageReveal = (el) => {
     const page = el.closest(PAGES);
     const state = page && current.get(page);
-    return state && !state.tall && !prefersReducedMotion() ? state.reveal : null;
+    const zoomed = document.documentElement.classList.contains("a11y-zoomed");
+    return state && !state.tall && !prefersReducedMotion() && !zoomed ? state.reveal : null;
   };
 
   const initPageReveal = () => {
@@ -78,7 +79,10 @@
 
     onFrame({
       read: () => {
-        if (prefersReducedMotion()) {
+        if (prefersReducedMotion() || document.documentElement.classList.contains("a11y-zoomed")) {
+          if (current.size > 0) {
+            clear();
+          }
           return null;
         }
         const vh = window.innerHeight;
@@ -88,8 +92,14 @@
            the flow, anything else by where it is drawn */
         let flowBottom = 0;
         return sections.map((section) => {
-          const height = section.el.offsetHeight;
-          const stuck = section.page && !section.film && !section.tall;
+          const content = section.el.querySelector(".container") || section.el.firstElementChild;
+          const contentHeight = content ? (content.scrollHeight || content.offsetHeight) : 0;
+          // Determine tallness ONLY from the inner content height, never from section.el.offsetHeight which has CSS min-height: 100svh
+          // Use hysteresis to eliminate frame-by-frame flapping
+          const wasTall = section.tall;
+          const tall = !section.film && (wasTall ? contentHeight > screen - 36 : contentHeight > screen - 12);
+          const stuck = section.page && !section.film && !tall;
+          const height = stuck ? screen : Math.max(contentHeight, section.el.offsetHeight || 0);
           const top = stuck ? flowBottom : section.el.getBoundingClientRect().top + y;
           const coverBottom = flowBottom;
           flowBottom = top + height;
@@ -100,7 +110,6 @@
           if (section.film && !section.el.classList.contains("has-sequence")) {
             return { skip: true, covered: false, uncoveredAt: coverBottom };
           }
-          const tall = !section.film && height > screen + 1;
           const span = section.film ? vh : Math.min(height, vh);
           const uncovered = vh - section.cover.getBoundingClientRect().bottom;
           const reveal = Math.min(1, Math.max(0, uncovered / span));
@@ -219,7 +228,7 @@
     window.BOK.revealHash = revealHash;
 
     onMotionChange((event) => {
-      if (event.matches) {
+      if (event.matches || document.documentElement.classList.contains("a11y-zoomed")) {
         clear();
       } else {
         requestFrame();

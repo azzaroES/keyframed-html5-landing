@@ -86,16 +86,16 @@
   visibility: hidden;
 }
 
-/* Slight dark grade plus vignette above the canvas, unifying frames and
-   copy */
+/* Dark cinematic vignette overlay above the frames to focus the center and make text/logo ultra readable */
 .film__media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: var(--color-night-a25);
+  pointer-events: none;
+  background-color: rgba(12, 10, 9, 0.32);
   background-image:
-    radial-gradient(120% 95% at 50% 42%, transparent 50%, var(--color-night-a85) 100%),
-    linear-gradient(180deg, var(--color-night-a45) 0%, transparent 24%, transparent 70%, var(--color-night-a85) 100%);
+    radial-gradient(ellipse 70% 65% at 50% 50%, transparent 22%, rgba(12, 10, 9, 0.58) 58%, rgba(12, 10, 9, 0.95) 100%),
+    linear-gradient(180deg, rgba(12, 10, 9, 0.88) 0%, rgba(12, 10, 9, 0.35) 18%, transparent 30%, transparent 70%, rgba(12, 10, 9, 0.6) 82%, rgba(12, 10, 9, 0.96) 100%);
 }
 
 /* Opening veil: while the hero film runs it starts 90% dark with only the
@@ -290,40 +290,138 @@
   display: none;
 }
 
-/* The logo that closes the hero, a link to directions */
-.cast-card__logo {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-1);
+/* The closing card: unified logo, Kebab title, address, and inlined meta row */
+.cast-card--closing {
+  pointer-events: auto;
+  gap: var(--space-3);
+}
+
+.cast-card--closing .cast-card__logo {
+  display: block;
   color: var(--color-gold);
-  transition: color var(--duration-ui) var(--ease-out);
+  pointer-events: auto;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-ui) var(--ease-out), transform var(--duration-ui) var(--ease-out);
 }
 
-/* The logo file keeps a clear margin round the drawing (most of it below);
-   the label tucks up into it */
-.cast-card__logo img {
-  width: min(10rem, 40vw);
+.cast-card--closing .cast-card__logo img {
+  display: block;
+  width: clamp(140px, 18vw, 210px);
   height: auto;
-  margin-bottom: -14%;
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 28px rgba(238, 88, 98, 0.45));
+  transition: transform var(--duration-ui) var(--ease-out), filter var(--duration-ui) var(--ease-out);
 }
 
-.cast-card__logo:hover {
-  color: var(--color-ivory);
+.cast-card--closing .cast-card__logo:hover img {
+  transform: scale(1.06);
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 40px rgba(238, 88, 98, 0.75));
+}
+
+.cast-card--closing .cast-card__center-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.cast-card--closing .cast-card__name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 5.8rem);
+  font-weight: var(--weight-display);
+  line-height: 0.98;
+  letter-spacing: var(--track-display);
+  color: #ffffff;
+  text-shadow:
+    0 2px 4px var(--color-night-a85),
+    0 8px 32px var(--color-night-a85);
+  margin-top: 0;
+}
+
+.cast-card--closing .cast-card__note {
+  font-style: normal;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.4;
+  color: #ffffff;
+  max-width: 100%;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.cast-card--closing .cast-card__note.stroke-p--center {
+  padding-bottom: var(--space-2);
+}
+
+.cast-card--closing .cast-card__note.stroke-p--center::before {
+  bottom: 0;
+  height: 2px;
+  width: 52px;
+  background-color: var(--color-gold);
+  inset-inline-start: calc(50% - 26px);
+}
+
+.cast-card__meta-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin-top: 0;
+  pointer-events: auto;
+}
+
+.cast-card--closing .cast-card__role {
+  padding-bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-kicker);
+  font-weight: var(--weight-ui);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: #f6c042;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.cast-card--closing .cast-card__role::after {
+  display: none;
+}
+
+.cast-card__meta-sep {
+  color: #f6c042;
+  font-size: 0.95rem;
+  line-height: 1;
+  user-select: none;
+  opacity: 0.8;
 }
 
 .cast-card__directions {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: 6px;
   font-size: var(--text-kicker);
-  font-weight: var(--weight-kicker);
+  font-weight: var(--weight-ui);
   letter-spacing: var(--track-kicker);
   text-transform: uppercase;
+  color: #f6c042;
+  text-decoration: none;
+  pointer-events: auto;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+.cast-card__directions:hover {
+  color: var(--color-ivory);
+  transform: translateY(-1px);
 }
 
 .cast-card__directions svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
+  color: #f6c042;
+  flex-shrink: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -348,7 +446,7 @@
     width: min(40rem, 44vw);
     gap: var(--space-2);
     opacity: var(--cast-t);
-    text-shadow: 0 2px 16px var(--color-night-a85);
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.95), 0 0 32px rgba(0, 0, 0, 0.85);
     will-change: transform, opacity;
   }
 
@@ -392,22 +490,53 @@
     transform: translate3d(-50%, calc(-50% + (1 - var(--cast-t)) * var(--space-3)), 0);
   }
 
-  /* The closing logo fills the empty upper part of the last shot, rising
-     and settling in as the film ends; it stays clickable although the
-     credits otherwise let taps through to the film */
-  .film:is(.is-loading-sequence, .has-sequence) .cast-card--logo {
-    top: max(var(--space-8), 8svh);
+  /* Desktop unified closing poster:
+     - Upper third: Large prominent glowing logo
+     - Middle: Bold white Kebab + address
+     - Bottom: Rich gold Ubicados & Cómo llegar */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing {
+    top: 50%;
     left: 50%;
-    width: auto;
-    transform: translate3d(-50%, calc((1 - var(--cast-t)) * var(--space-3)), 0) scale(calc(0.9 + 0.1 * var(--cast-t)));
-  }
-
-  .film:is(.is-loading-sequence, .has-sequence) .cast-card__logo {
+    width: min(54rem, calc(100% - 2 * var(--gutter)));
+    height: min(80vh, 680px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transform: translate3d(-50%, calc(-50% + (1 - var(--cast-t)) * var(--space-3)), 0) scale(calc(0.96 + 0.04 * var(--cast-t)));
     pointer-events: auto;
   }
 
-  .film:is(.is-loading-sequence, .has-sequence) .cast-card__logo img {
-    width: min(13rem, 26svh, 52vw);
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--space-2);
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo img {
+    width: clamp(170px, 19vw, 240px);
+    max-width: 250px;
+    height: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__name {
+    font-size: clamp(4.2rem, 9vw, 6.6rem);
+    color: #ffffff;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__note {
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    color: #ffffff;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__role,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions {
+    font-size: 1rem;
+    color: #f6c042 !important;
   }
 
   /* Strokes follow the credit's side: kicker underline and paragraph rule
@@ -438,7 +567,7 @@
 @media (prefers-reduced-motion: no-preference) and (max-width: 900px) {
   .film:is(.is-loading-sequence, .has-sequence) .cast-card--left,
   .film:is(.is-loading-sequence, .has-sequence) .cast-card--right,
-  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center {
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center:not(.cast-card--closing) {
     top: auto;
     bottom: calc(var(--space-12) + env(safe-area-inset-bottom, 0px));
     left: var(--gutter);
@@ -458,8 +587,109 @@
     transform: translate3d(calc((1 - var(--cast-t)) * var(--space-3)), 0, 0);
   }
 
-  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center {
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--center:not(.cast-card--closing) {
     transform: translate3d(0, calc((1 - var(--cast-t)) * var(--space-2)), 0);
+  }
+
+  /* Full-screen poster layout on mobile:
+     - Upper third: Large prominent glowing logo
+     - Middle: Bold white Kebab + address
+     - Bottom: Rich gold Ubicados & Cómo llegar */
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing {
+    position: absolute;
+    inset: 0;
+    top: calc(var(--space-4) + env(safe-area-inset-top, 0px));
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-2) var(--space-2);
+    transform: translate3d(0, calc((1 - var(--cast-t)) * var(--space-3)), 0);
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: calc(var(--space-2) + env(safe-area-inset-top, 0px));
+    pointer-events: auto;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__logo img {
+    width: clamp(170px, 48vw, 235px);
+    max-width: 245px;
+    height: auto;
+    filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 32px rgba(238, 88, 98, 0.6));
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__center-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__name {
+    font-size: clamp(3.4rem, 13vw, 4.8rem);
+    color: #ffffff;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.95),
+      0 8px 30px rgba(0, 0, 0, 0.9);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__note {
+    font-size: clamp(0.95rem, 3.4vw, 1.15rem);
+    max-width: 100%;
+    white-space: nowrap;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__meta-row {
+    margin-bottom: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    max-width: 100%;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__role,
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions {
+    font-size: clamp(0.72rem, 2.4vw, 0.85rem);
+    font-weight: 700;
+    letter-spacing: clamp(0.06em, 0.15vw, 0.12em);
+    white-space: nowrap;
+    color: #f6c042 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+  }
+
+  :root.a11y-zoomed .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__role,
+  :root.a11y-zoomed .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions {
+    font-size: clamp(0.62rem, 2vw, 0.72rem);
+    letter-spacing: 0.05em;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__directions svg {
+    color: #f6c042 !important;
+    width: 14px;
+    height: 14px;
+  }
+
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__meta-sep {
+    color: #f6c042 !important;
+    opacity: 0.8;
   }
 }
 

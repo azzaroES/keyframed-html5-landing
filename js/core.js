@@ -20,6 +20,7 @@
 
   const applyA11y = () => {
     docEl.style.fontSize = a11yState.size ? `${TEXT_SIZES[a11yState.size]}%` : "";
+    docEl.classList.toggle("a11y-zoomed", a11yState.size > 0);
     docEl.classList.toggle("a11y-contrast", a11yState.contrast);
     docEl.classList.toggle("a11y-still", a11yState.still);
     docEl.classList.toggle("a11y-links", a11yState.links);

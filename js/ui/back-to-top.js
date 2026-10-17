@@ -119,19 +119,31 @@
       event.preventDefault();
       stopRewind();
       const from = window.scrollY;
-      /* Each step must land exactly, not glide under CSS smooth scrolling */
       docEl.style.scrollBehavior = "auto";
-      if (prefersReducedMotion() || from < 2) {
-        window.scrollTo(0, 0);
+
+      /* Go back 1 section: find previous section boundary above current position */
+      const tops = naturalTops();
+      const points = [];
+      flow.forEach((child) => {
+        const top = tops.get(child) || 0;
+        points.push(top);
+      });
+      const sortedPoints = Array.from(new Set(points)).sort((a, b) => a - b);
+      const prevPoints = sortedPoints.filter((p) => p < from - 24);
+      const targetY = prevPoints.length ? prevPoints[prevPoints.length - 1] : 0;
+
+      if (prefersReducedMotion() || Math.abs(from - targetY) < 2) {
+        window.scrollTo(0, targetY);
         land();
         return;
       }
-      const duration = Math.min(4200, Math.max(900, from / 3));
+      const dist = Math.abs(from - targetY);
+      const duration = Math.min(1400, Math.max(450, dist * 0.7));
       const start = performance.now();
       const step = (now) => {
         const t = Math.min(1, (now - start) / duration);
         const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        window.scrollTo(0, Math.round(from * (1 - eased)));
+        window.scrollTo(0, Math.round(from + (targetY - from) * eased));
         if (t < 1) {
           rewind = window.requestAnimationFrame(step);
         } else {

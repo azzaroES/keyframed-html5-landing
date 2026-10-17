@@ -10,3 +10,7 @@ assets/source/
 Thumbs.db
 desktop.ini
 .vscode/
+
+# Local backup directories
+assets/frames_chicken_backup/
+*.zip

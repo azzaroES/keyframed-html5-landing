@@ -30,7 +30,8 @@
   }
 
   .hero__scroll-line::after,
-  .scroll-cue__line::after {
+  .scroll-cue__line::after,
+  .footer-hero-rewind__line::after {
     animation: none !important;
     opacity: 0;
   }
@@ -78,6 +79,6 @@
   opacity: 1 !important;
 }
 
-.a11y-still :is(.hero__scroll-line, .scroll-cue__line)::after {
+.a11y-still :is(.hero__scroll-line, .scroll-cue__line, .footer-hero-rewind__line)::after {
   opacity: 0;
 }

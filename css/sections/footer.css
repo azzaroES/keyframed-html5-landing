@@ -2,57 +2,208 @@
    ========================================================================== */
 
 .site-footer {
-  padding-block: var(--space-10) var(--space-6);
+  padding-block: var(--space-6) var(--space-4);
   border-top: 1px solid var(--rule);
 }
 
-/* The hero's "Desliza" cue, mirrored: its beam runs upward and it rewinds
-   the page to the top */
-.scroll-cue {
+/* 1 · Footer Hero: Big glowing animated logo on top, inlined numbers & desliza beneath */
+.site-footer__hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
-  width: max-content;
-  margin: 0 auto var(--space-8);
-  color: var(--on-surface-soft);
-  transition: color var(--duration-ui) var(--ease-out);
+  justify-content: center;
+  gap: clamp(var(--space-5), 4vw, var(--space-8));
+  margin: 0 auto var(--space-6);
+  max-width: 760px;
 }
 
-.scroll-cue:hover {
-  color: var(--accent-ink);
-}
-
-.scroll-cue--up .scroll-cue__line::after {
-  animation-direction: reverse;
-}
-
-.site-footer__top {
+/* Central rewind logo: prominent, glowing, breathing flame animation */
+.footer-logo-rewind {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-5);
-  text-align: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--duration-ui) var(--ease-out);
 }
 
-.wordmark--footer {
-  color: var(--on-surface);
+.footer-logo-rewind__img {
+  display: block;
+  width: clamp(140px, 15vw, 190px);
+  height: auto;
+  max-width: 195px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(238, 88, 98, 0.35)) drop-shadow(0 0 24px rgba(212, 175, 55, 0.2));
+  animation: footer-logo-glow 3.2s ease-in-out infinite;
+  transition:
+    transform var(--duration-ui) var(--ease-out),
+    filter var(--duration-ui) var(--ease-out);
 }
 
-.wordmark--footer .wordmark__name {
-  font-size: 1.25rem;
+@keyframes footer-logo-glow {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 10px rgba(238, 88, 98, 0.35)) drop-shadow(0 0 22px rgba(212, 175, 55, 0.18));
+  }
+  50% {
+    transform: translateY(-5px) scale(1.035);
+    filter: drop-shadow(0 0 24px rgba(238, 88, 98, 0.7)) drop-shadow(0 0 42px rgba(212, 175, 55, 0.42));
+  }
 }
 
-.wordmark--footer .wordmark__sub {
-  font-size: 0.625rem;
-  color: var(--accent-ink);
+.footer-logo-rewind:hover .footer-logo-rewind__img {
+  transform: translateY(-7px) scale(1.06);
+  filter: drop-shadow(0 0 32px rgba(238, 88, 98, 0.85)) drop-shadow(0 0 55px rgba(212, 175, 55, 0.6));
+}
+
+/* Inlined bar: Phone 1 + Desliza + Phone 2 all in 1 row */
+.site-footer__inlined-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--space-1), 2.5vw, var(--space-4));
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Phone cards left & right: icons on top, numbers underneath */
+.site-footer__phone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  background-color: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  color: var(--color-gold);
+  text-decoration: none;
+  min-height: 50px;
+  min-width: 112px;
+  transition:
+    background-color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out),
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    box-shadow var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__phone-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-gold);
+  flex-shrink: 0;
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__phone-num {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-display);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.site-footer__phone:hover {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-night);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.28);
+}
+
+.site-footer__phone:hover .site-footer__phone-icon {
+  color: var(--color-night);
+  transform: scale(1.12);
+}
+
+/* Inlined Desliza button in the center of the bar */
+.footer-desliza-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  background-color: rgba(238, 88, 98, 0.08);
+  border: 1px solid rgba(238, 88, 98, 0.32);
+  color: #ee5862;
+  text-decoration: none;
+  min-height: 50px;
+  min-width: 90px;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out),
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    box-shadow var(--duration-ui) var(--ease-out);
+}
+
+.footer-desliza-btn__icon {
+  width: 18px;
+  height: 18px;
+  color: #ee5862;
+  animation: desliza-bounce 2.2s ease-in-out infinite;
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+@keyframes desliza-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.footer-desliza-btn__label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: var(--weight-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.footer-desliza-btn:hover {
+  background-color: #ee5862;
+  border-color: #ee5862;
+  color: var(--color-night);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(238, 88, 98, 0.4);
+}
+
+.footer-desliza-btn:hover .footer-desliza-btn__icon {
+  color: var(--color-night);
+  transform: translateY(-2px);
+}
+
+/* 2 · Unified links row: Menu and Socials on 1 row on desktop, centered on mobile */
+.site-footer__links-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: var(--space-4);
 }
 
 .site-footer__nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3) var(--space-4);
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
 }
 
 .site-footer__nav a {
@@ -70,39 +221,42 @@
 
 .site-footer__social {
   display: flex;
+  align-items: center;
   gap: var(--space-2);
 }
 
 .site-footer__social a {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 1px solid var(--rule);
   border-radius: 50%;
   color: var(--on-surface-soft);
   transition:
     color var(--duration-ui) var(--ease-out),
-    border-color var(--duration-ui) var(--ease-out);
+    border-color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
 }
 
 .site-footer__social a:hover {
   color: var(--accent-ink);
   border-color: var(--accent-ink);
+  transform: translateY(-1px);
 }
 
 .site-footer__social svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
-/* Payment methods: one consistent badge style for every card and gateway */
+/* 3 · Payment methods: strict 1-row layout */
 .site-footer__pay {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  margin-top: var(--space-8);
+  margin-top: var(--space-3);
 }
 
 .site-footer__pay-label {
@@ -126,31 +280,38 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-1);
+  align-items: center;
+  gap: clamp(3px, 1.2vw, var(--space-1));
+  width: 100%;
+  max-width: 100%;
 }
 
 .pay__item {
   display: inline-flex;
   align-items: center;
-  height: 32px;
-  padding: 0 var(--space-2);
+  justify-content: center;
+  height: 26px;
+  padding: 0 clamp(4px, 1.2vw, var(--space-2));
   border: 1px solid var(--rule);
-  border-radius: 6px;
+  border-radius: 4px;
   font-family: var(--font-display);
-  font-size: 0.8125rem;
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   font-weight: var(--weight-display);
   letter-spacing: 0.02em;
+  white-space: nowrap;
   color: var(--on-surface);
+  flex-shrink: 0;
 }
 
+/* 4 · Bottom line: Legal, Address, Credits */
 .site-footer__bottom {
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
   border-top: 1px solid var(--hairline);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1);
   font-size: var(--text-small);
   color: var(--on-surface-soft);
   text-align: center;
@@ -181,29 +342,29 @@
     opacity: 1;
     transform: scale(1);
   }
-
   15% {
     transform: scale(1.25);
   }
-
   30% {
     opacity: 0.5;
     transform: scale(1);
   }
-
   45% {
-    opacity: 1;
     transform: scale(1.18);
   }
 }
 
-@media (min-width: 860px) {
-  .site-footer__top {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .footer-logo-rewind__img,
+  .footer-desliza-btn__icon,
+  .heart {
+    animation: none;
   }
+}
 
+/* 5 · Responsive desktop layout (min-width: 860px) */
+@media (min-width: 860px) {
   .site-footer__pay {
     flex-direction: row;
     justify-content: space-between;
@@ -215,63 +376,128 @@
   }
 }
 
-/* Phones: a compact footer, so the whole of it fits even a short screen
-   and it is always revealed in place beneath the club rather than
-   scrolled in: wordmark and social icons share a row with the links
-   under them, smaller payment badges, tight spacing, and room under the
-   last line for the floating buttons. Last in the file, so it wins over
-   the rules above. */
+/* 6 · Responsive mobile layout (max-width: 859px): Compact spacing, filled empty space */
 @media (max-width: 859px) {
-  .site-footer {
-    padding-top: var(--space-4);
-    padding-bottom: calc(var(--space-2) + 64px + env(safe-area-inset-bottom, 0px));
+  :root:not(.a11y-still):not(.a11y-zoomed) .site-footer:not(.is-tall) {
+    align-content: start;
   }
 
-  .site-footer .scroll-cue {
-    gap: var(--space-1);
+  .site-footer {
+    padding-top: var(--space-4);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer > .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+
+  .site-footer__hero {
+    gap: clamp(var(--space-4), 5vw, var(--space-6));
     margin-bottom: var(--space-3);
   }
 
-  .site-footer .scroll-cue__line {
-    height: 24px;
+  .footer-logo-rewind__img {
+    width: clamp(130px, 38vw, 170px);
+    max-width: 175px;
   }
 
-  .site-footer__top {
-    display: grid;
-    grid-template-columns: 1fr auto;
+  .site-footer__inlined-bar {
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .site-footer__phone {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0.35rem 0.25rem;
+    gap: 0.15rem;
+  }
+
+  .site-footer__phone-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .site-footer__phone-num {
+    font-size: clamp(0.625rem, 2.4vw, 0.72rem);
+    white-space: nowrap;
+  }
+
+  .footer-desliza-btn {
+    flex: 0 1 auto;
+    min-width: 70px;
+    min-height: 42px;
+    padding: 0.35rem 0.4rem;
+    gap: 0.15rem;
+  }
+
+  .footer-desliza-btn__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .footer-desliza-btn__label {
+    font-size: clamp(0.625rem, 2.4vw, 0.72rem);
+    white-space: nowrap;
+  }
+
+  .site-footer__links-row {
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: var(--space-2);
-    text-align: left;
+    padding-block: var(--space-2);
+    margin-bottom: 0;
   }
 
   .site-footer__nav {
-    grid-row: 2;
-    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--space-1) var(--space-3);
   }
 
   .site-footer__social {
-    grid-row: 1;
-    grid-column: 2;
+    justify-content: center;
+    gap: var(--space-1);
+  }
+
+  .site-footer__social a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .site-footer__social svg {
+    width: 14px;
+    height: 14px;
   }
 
   .site-footer__pay {
-    gap: var(--space-1);
-    margin-top: var(--space-3);
+    margin-top: 0;
+    gap: 4px;
+  }
+
+  .pay {
+    gap: 3px;
   }
 
   .pay__item {
-    height: 24px;
-    padding: 0 var(--space-1);
-    border-radius: 4px;
-    font-size: 0.6875rem;
+    height: 22px;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-size: 0.58rem;
   }
 
   .site-footer__bottom {
-    gap: 0;
-    margin-top: var(--space-3);
+    margin-top: 0;
     padding-top: var(--space-2);
+    gap: 2px;
     font-size: var(--text-micro);
-    line-height: 1.8;
+    line-height: 1.4;
   }
 }

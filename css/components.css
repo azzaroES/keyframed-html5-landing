@@ -48,14 +48,21 @@
   font-size: var(--text-kicker);
   font-weight: var(--weight-kicker);
   line-height: 1.4;
-  letter-spacing: var(--track-kicker);
+  letter-spacing: clamp(0.08em, 1.2vw, var(--track-kicker));
   text-transform: uppercase;
   color: var(--accent-ink, var(--color-gold));
+  max-width: 100%;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  box-sizing: border-box;
 }
 
 .section-title {
   font-size: var(--text-h2);
   margin-top: var(--space-3);
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  max-width: 100%;
 }
 
 .section-head--center {

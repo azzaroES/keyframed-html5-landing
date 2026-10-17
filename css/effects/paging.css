@@ -58,21 +58,21 @@
       z-index: 4;
     }
 
-    :root:not(.a11y-still) .film--menu {
+    :root:not(.a11y-still):not(.a11y-zoomed) .film--menu {
       z-index: 3;
     }
 
-    :root:not(.a11y-still) .cta {
+    :root:not(.a11y-still):not(.a11y-zoomed) .cta {
       z-index: 2;
     }
 
-    :root:not(.a11y-still) .site-footer {
+    :root:not(.a11y-still):not(.a11y-zoomed) .site-footer {
       z-index: 1;
     }
 
     /* A page whose content is taller than the screen (.is-tall, from the
        JS) would hide its top while stuck, so it simply scrolls in */
-    :root:not(.a11y-still) :is(.order, .pillars, .cta, .site-footer):not(.is-tall) {
+    :root:not(.a11y-still):not(.a11y-zoomed) :is(.order, .pillars, .cta, .site-footer):not(.is-tall) {
       position: sticky;
       bottom: 0;
       display: grid;
@@ -84,28 +84,34 @@
     /* A page centres its content, so it needs less padding to breathe. The
        same padding when it is too tall, so the JS measures one height
        either way and a page never flips back and forth. */
-    :root:not(.a11y-still) :is(.order, .pillars, .cta) {
+    :root:not(.a11y-still):not(.a11y-zoomed) :is(.order, .pillars, .cta) {
       padding-block: clamp(var(--space-6), 8vh, var(--space-15));
     }
 
     /* Still fully covered: drawn by nobody (its links stay in the tab
        order; focusing one scrolls its page into view) */
-    :root:not(.a11y-still) .is-covered {
+    :root:not(.a11y-still):not(.a11y-zoomed) .is-covered {
       opacity: 0;
     }
 
     /* The menu film starts one screen early, underneath the method page,
-       and its track grows by that screen so the scrub keeps its length */
-    :root.js:not(.a11y-still) .film--menu.has-sequence {
+       and its track grows by that screen so the scrub keeps its length.
+       If the pillars page is .is-tall, the menu sits directly in flow. */
+    :root.js:not(.a11y-still):not(.a11y-zoomed) .film--menu.has-sequence {
       margin-top: -100vh;
       margin-top: -100svh;
       height: calc(var(--scrub) + 100vh);
       height: calc(var(--scrub) + 100svh);
     }
 
+    :root.js:not(.a11y-still):not(.a11y-zoomed) .pillars.is-tall + .film--menu.has-sequence {
+      margin-top: 0;
+      height: var(--scrub);
+    }
+
     /* The veil: dark over a page still covered, gone once it is uncovered */
-    :root:not(.a11y-still) :is(.order, .pillars, .cta, .site-footer):not(.is-tall)::after,
-    :root.js:not(.a11y-still) .film--menu.has-sequence .film__stage::after {
+    :root:not(.a11y-still):not(.a11y-zoomed) :is(.order, .pillars, .cta, .site-footer):not(.is-tall)::after,
+    :root.js:not(.a11y-still):not(.a11y-zoomed) .film--menu.has-sequence .film__stage::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -118,7 +124,7 @@
 
     /* Each lifting page casts a soft shadow on the one it uncovers, so the
        edge reads even dark on dark */
-    :root:not(.a11y-still) :is(.hero, .order, .pillars, .film--menu, .cta) {
+    :root:not(.a11y-still):not(.a11y-zoomed) :is(.hero, .order, .pillars, .film--menu, .cta) {
       box-shadow: 0 var(--space-4) var(--space-8) var(--color-shadow-a60);
     }
   }

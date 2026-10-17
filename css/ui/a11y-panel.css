@@ -208,7 +208,7 @@
   --color-night-a25: var(--color-night-a45);
 }
 
-:root.a11y-links a:not(.button, .wordmark, .skip-link, .wa__avatar, .scroll-cue) {
+:root.a11y-links a:not(.button, .wordmark, .skip-link, .wa__avatar, .scroll-cue, .footer-hero-rewind, .site-footer__phone, .footer-desliza-btn) {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;

@@ -82,8 +82,9 @@
        under the page before it (data-uncover, see the paging CSS) spends
        its first screen being uncovered, so the scrub starts after it. */
     const uncovers = film.hasAttribute("data-uncover");
+    const isTucked = () => uncovers && active && (parseFloat(window.getComputedStyle(film).marginTop) || 0) < -10;
     const progress = (rect = film.getBoundingClientRect()) => {
-      const lead = uncovers && active ? stage.offsetHeight : 0;
+      const lead = isTucked() ? stage.offsetHeight : 0;
       const travel = film.offsetHeight - stage.offsetHeight - lead;
       if (travel <= 0) {
         return 0;
