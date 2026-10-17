@@ -27,6 +27,7 @@
     if (a.target && a.target !== '_self') return false;
     if (a.hasAttribute('download')) return false;
     if (a.href.indexOf('mailto:') === 0 || a.href.indexOf('tel:') === 0) return false;
+    if (a.closest && (a.closest('#wpadminbar') || a.closest('.edit-link') || a.closest('.post-edit-link'))) return false;
     if (a.href.indexOf('wp-admin') !== -1 || a.href.indexOf('wp-login') !== -1) return false;
     if (a.href.indexOf('/go/') !== -1) return false; // allow shortlinker redirects
     return a.origin === window.location.origin;
@@ -105,7 +106,17 @@
 
         // Use modern View Transitions API if available in browser
         if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          document.startViewTransition(updateDOM);
+          try {
+            var transition = document.startViewTransition(updateDOM);
+            if (transition && transition.ready) {
+              transition.ready.catch(function () {});
+            }
+            if (transition && transition.finished) {
+              transition.finished.catch(function () {});
+            }
+          } catch (err) {
+            updateDOM();
+          }
         } else {
           updateDOM();
         }

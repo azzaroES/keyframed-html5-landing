@@ -26,11 +26,18 @@ class Kebab_Starter_Content {
             return;
         }
 
-        self::seed_contact_page();
-        self::seed_blog_page();
-        self::seed_demo_posts();
+        if (wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST)) {
+            return;
+        }
 
-        update_option(self::SEED_OPTION, self::SEED_VERSION);
+        try {
+            self::seed_contact_page();
+            self::seed_blog_page();
+            self::seed_demo_posts();
+            update_option(self::SEED_OPTION, self::SEED_VERSION);
+        } catch (\Throwable $e) {
+            error_log('Kebab Starter Content Seeder Error: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -88,9 +95,9 @@ class Kebab_Starter_Content {
      * 3. Seed Cinematic Blog Posts with AI Citation Card
      */
     private static function seed_demo_posts() {
-        // Create categories
-        $cat_gastronomia = wp_create_category('Gastronomía & Origen');
-        $cat_recetas     = wp_create_category('Recetas & Técnicas');
+        // Create categories safely
+        $cat_gastronomia = self::get_or_create_category('Gastronomía & Origen');
+        $cat_recetas     = self::get_or_create_category('Recetas & Técnicas');
 
         $main_post_content = '<!-- wp:paragraph {"className":"kebab-sheet-lead"} -->
 <p class="kebab-sheet-lead">El asador vertical no es solo un método de cocción: es una coreografía termodinámica perfeccionada durante siglos. Descubre cómo combinamos la tradición del espetón levantino con la precisión científica y el corte milimétrico en Cariñena.</p>
@@ -227,6 +234,42 @@ class Kebab_Starter_Content {
                 'comment_status' => 'open',
             ]);
         }
+    }
+
+    /**
+     * Safely get or create a category using core taxonomy functions
+     * (Avoids admin-only wp_create_category() which is undefined during init)
+     */
+    private static function get_or_create_category(string $name): int {
+        // 1. Check if category exists by name
+        $term = get_term_by('name', $name, 'category');
+        if ($term && !is_wp_error($term)) {
+            return (int)$term->term_id;
+        }
+
+        // 2. Load admin taxonomy helper if available
+        if (!function_exists('wp_create_category') && defined('ABSPATH') && file_exists(ABSPATH . 'wp-admin/includes/taxonomy.php')) {
+            require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
+        }
+
+        if (function_exists('wp_create_category')) {
+            $cat_id = wp_create_category($name);
+            if ($cat_id && !is_wp_error($cat_id)) {
+                return (int)$cat_id;
+            }
+        }
+
+        // 3. Fallback to core wp_insert_term
+        $inserted = wp_insert_term($name, 'category');
+        if (!is_wp_error($inserted) && isset($inserted['term_id'])) {
+            return (int)$inserted['term_id'];
+        }
+
+        if (is_wp_error($inserted) && isset($inserted->error_data['term_exists'])) {
+            return (int)$inserted->error_data['term_exists'];
+        }
+
+        return 1; // Default to uncategorized
     }
 }
 

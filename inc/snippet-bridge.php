@@ -31,8 +31,8 @@ class Kebab_Snippet_Bridge {
         // Register Novamira MCP Abilities if Abilities API is available
         add_action('wp_abilities_api_init', [__CLASS__, 'register_abilities']);
 
-        // In fallback file-mode, auto-load active snippets during runtime
-        add_action('plugins_loaded', [__CLASS__, 'boot_file_snippets'], 1);
+        // In fallback file-mode, auto-load active frontend snippets safely
+        add_action('after_setup_theme', [__CLASS__, 'boot_file_snippets'], 100);
     }
 
     /**
@@ -65,16 +65,9 @@ class Kebab_Snippet_Bridge {
      * @return string
      */
     public static function get_fallback_dir(): string {
-        // Prefer mu-plugins if available/creatable
-        $mu_dir = defined('WPMU_PLUGIN_DIR') ? WPMU_PLUGIN_DIR . '/kebab-snippets' : WP_CONTENT_DIR . '/mu-plugins/kebab-snippets';
-        if (wp_mkdir_p($mu_dir) && wp_is_writable($mu_dir)) {
-            return $mu_dir;
-        }
-
-        // Fallback to theme directory
         $theme_dir = get_template_directory() . '/inc/snippets';
         if (!file_exists($theme_dir)) {
-            wp_mkdir_p($theme_dir);
+            @wp_mkdir_p($theme_dir);
         }
         return $theme_dir;
     }
@@ -539,6 +532,10 @@ class Kebab_Snippet_Bridge {
     // =========================================================================
 
     public static function boot_file_snippets() {
+        if (is_admin() || wp_doing_ajax() || wp_doing_cron()) {
+            return;
+        }
+
         if (self::get_backend() !== self::BACKEND_FILE) {
             return;
         }
