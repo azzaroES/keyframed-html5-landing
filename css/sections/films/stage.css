@@ -116,4 +116,6 @@
 
 .film:is(.is-loading-sequence, .has-sequence) .film__title {
   will-change: transform, opacity;
+  transform: translateZ(0);
+  contain: layout paint;
 }

@@ -2,6 +2,13 @@
    Active scroll-driven positioning, 3D float transitions, and responsive poster layouts
    ========================================================================== */
 
+/* Register --cast-t as a non-inheriting number to prevent subtree style recalculation */
+@property --cast-t {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .film:is(.is-loading-sequence, .has-sequence) .film__cast {
     position: absolute;
@@ -10,6 +17,9 @@
     max-width: none;
     padding: 0;
     pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
+    contain: layout paint;
   }
 
   /* Credits float over the film canvas:
@@ -22,8 +32,12 @@
     width: min(40rem, 44vw);
     gap: var(--space-2);
     opacity: var(--cast-t);
-    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.95), 0 0 32px rgba(0, 0, 0, 0.85);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 24px rgba(0, 0, 0, 0.75);
     will-change: transform, opacity;
+    transform: translateZ(0);
+    contain: layout paint;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .film:is(.is-loading-sequence, .has-sequence) .cast-card__name {
@@ -145,8 +159,13 @@
     width: auto;
   }
 
+  .film:is(.is-loading-sequence, .has-sequence) .cast-card {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 4px 16px rgba(0, 0, 0, 0.85);
+  }
+
   .film:is(.is-loading-sequence, .has-sequence) .cast-card__name {
     font-size: clamp(2.5rem, 9vw, 4.5rem);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 4px 16px rgba(0, 0, 0, 0.85);
   }
 
   .film:is(.is-loading-sequence, .has-sequence) .cast-card--left {
@@ -196,7 +215,9 @@
     width: clamp(170px, 48vw, 235px);
     max-width: 245px;
     height: auto;
-    filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 32px rgba(238, 88, 98, 0.6));
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 18px rgba(238, 88, 98, 0.45));
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   .film:is(.is-loading-sequence, .has-sequence) .cast-card--closing .cast-card__center-group {

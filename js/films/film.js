@@ -40,6 +40,8 @@
     const cast = Array.from(film.querySelectorAll("[data-cast-start]"))
       .map((el) => ({
         el,
+        style: el.style,
+        isClosing: el.classList.contains("cast-card--closing"),
         start: parseFloat(el.dataset.castStart),
         end: parseFloat(el.dataset.castEnd),
         t: -1,
@@ -149,9 +151,11 @@
       }
 
       cast.forEach((credit) => {
-        const style = credit.el.style;
+        const style = credit.style;
         if (!active) {
           style.removeProperty("--cast-t");
+          style.removeProperty("opacity");
+          style.removeProperty("pointer-events");
           style.removeProperty("visibility");
           credit.t = -1;
           return;
@@ -161,9 +165,21 @@
         const fadeOut = credit.end >= 1 ? 1 : (1 - local) / CAST_FADE;
         const linear = Math.min(1, Math.max(0, Math.min(fadeIn, fadeOut)));
         const t = Math.round(linear * linear * (3 - 2 * linear) * 1000) / 1000;
+
+        if (t === 0) {
+          if (credit.t !== 0) {
+            style.opacity = "0";
+            style.pointerEvents = "none";
+            style.setProperty("--cast-t", "0");
+            credit.t = 0;
+          }
+          return;
+        }
+
         if (t !== credit.t) {
+          style.opacity = String(t);
+          style.pointerEvents = (t > 0.7 && credit.isClosing) ? "auto" : "none";
           style.setProperty("--cast-t", String(t));
-          style.visibility = t > 0 ? "" : "hidden";
           credit.t = t;
         }
       });
