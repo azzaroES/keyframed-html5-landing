@@ -99,3 +99,16 @@ body.kebab-inner-page .kebab-bottom-app-bar {
 body.kebab-inner-page {
   padding-bottom: 74px;
 }
+
+/* SPA Page Transitions */
+.kebab-page-transitioning #main {
+  opacity: 0.65;
+  filter: blur(1px);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+

@@ -1,0 +1,28 @@
+# Cariñena Kebab Tacos & Pizzas
+
+> Artesanía mediterránea & kebab gourmet en Cariñena, Zaragoza.
+
+## Business NAP & Identity
+- **Name:** Cariñena Kebab Tacos & Pizzas
+- **Niche / Schema:** https://schema.org/FastFoodRestaurant
+- **Address:** Av. del Ejército, 28, 50400 Cariñena (Zaragoza, España)
+- **Telephone:** +34 876 65 34 61
+- **WhatsApp:** +34 643 05 51 02
+- **Email:** contacto@carinenakebab.es
+- **Geo Coordinates:** 41.3385, -1.2225
+- **CUI / CIF:** B-99887766
+
+## Quick Action Links
+- **Order via WhatsApp:** https://carinenakebab.es/go/pedir
+- **Digital Menu & Prices:** https://carinenakebab.es/go/carta
+- **Google Maps Directions:** https://carinenakebab.es/go/maps
+- **Instant vCard Download (.vcf):** https://carinenakebab.es/go/vcard
+- **Contact Hub:** https://carinenakebab.es/contact/
+- **Blog & Articles:** https://carinenakebab.es/blog/
+
+## AI & Agentic Interfaces
+- **Full Catalog & Documentation:** https://carinenakebab.es/llms-full.txt
+- **REST NAP Endpoint:** https://carinenakebab.es/wp-json/kebab/v1/nap
+- **REST Design Tokens:** https://carinenakebab.es/wp-json/kebab/v1/tokens
+- **REST Live Schedule Status:** https://carinenakebab.es/wp-json/kebab/v1/status
+- **Design Contract (Novamira MCP):** https://carinenakebab.es/wp-content/themes/carinena-kebab-fse/DESIGN.md

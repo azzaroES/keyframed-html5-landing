@@ -16,7 +16,7 @@ if (Test-Path $DistDir) {
 New-Item -ItemType Directory -Path $StagingDir -Force | Out-Null
 
 # 2. Copy core theme files (including index.php and style.css required by WP theme installer)
-$RootFiles = @("style.css", "index.php", "theme.json", "DESIGN.md", "functions.php", "README.md")
+$RootFiles = @("style.css", "index.php", "theme.json", "DESIGN.md", "functions.php", "README.md", "llms.txt", "llms-full.txt", "robots.txt")
 foreach ($file in $RootFiles) {
     $src = Join-Path $RootDir $file
     if (Test-Path $src) {

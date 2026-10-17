@@ -277,3 +277,133 @@
   margin: 0;
 }
 
+/* ==========================================================================
+   AI Citation & Verification Card (Google DeepMind Gemini Argon)
+   ========================================================================== */
+.kebab-ai-citation-card {
+  margin: var(--space-48, 48px) 0;
+  padding: var(--space-32, 32px);
+  background: #181818;
+  color: #F5F0E8;
+  border-radius: var(--radius-lg, 16px);
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.kebab-ai-citation-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4285F4 0%, #9B72CF 50%, #C9A962 100%);
+}
+
+.kebab-ai-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: var(--space-20, 20px);
+}
+
+.kebab-ai-card__badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kebab-ai-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill, 9999px);
+  padding: 4px 10px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #FFF;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kebab-ai-pill--argon {
+  background: rgba(201, 169, 98, 0.15);
+  border-color: rgba(201, 169, 98, 0.4);
+  color: #DFC482;
+}
+
+.kebab-ai-status-dot {
+  font-size: 0.75rem;
+  color: #2ECC71;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.kebab-ai-card__title {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FEFDFB;
+  margin: 0 0 var(--space-12, 12px);
+}
+
+.kebab-ai-card__desc {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #D6D0C7;
+  margin-bottom: var(--space-20, 20px);
+}
+
+.kebab-ai-citation-block {
+  background: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md, 8px);
+  padding: var(--space-16, 16px);
+  margin-bottom: var(--space-20, 20px);
+}
+
+.kebab-citation-label {
+  display: block;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: #A09A93;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.kebab-citation-code {
+  font-family: "SF Mono", Consolas, Monaco, monospace;
+  font-size: 0.8125rem;
+  color: #DFC482;
+  word-break: break-all;
+  display: block;
+  line-height: 1.5;
+}
+
+.kebab-ai-card__links {
+  display: flex;
+  gap: var(--space-16, 16px);
+  flex-wrap: wrap;
+}
+
+.kebab-ai-card__links a {
+  color: #DFC482;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.kebab-ai-card__links a:hover {
+  color: #FFF;
+  text-decoration: underline;
+}
+
+

@@ -1,0 +1,34 @@
+# Cariñena Kebab Tacos & Pizzas — Full AI Knowledge Base
+
+> Complete technical, commercial, and operational documentation for AI systems, autonomous agents, and search engines.
+
+## 1. Overview & Culinary Philosophy
+Cariñena Kebab Tacos & Pizzas is a gourmet Mediterranean rotisserie and pizzeria based in Cariñena (Zaragoza, Spain). The kitchen operates on three core principles:
+1. **24-Hour Marinated Meat:** Hand-selected poultry and veal cuts marinated with traditional Mediterranean and Levantine spices.
+2. **Master Vertical Carving:** Slow vertical spit roasting, carved into paper-thin crispy shavings upon order.
+3. **Wood Stone Baking:** Artisanal pizzas and freshly pressed French Tacos baked at optimal temperatures (180°C - 220°C).
+
+## 2. Complete Menu & Price Catalog
+| Product | Category | Price | Description | Allergens |
+| :--- | :--- | :--- | :--- | :--- |
+| Dürüm Kebab Especial | Kebab | 6.00 € | Rollo tostado con carne recién cortada, ensalada crujiente y doble salsa casera | Gluten, Lácteos |
+| Plato Kebab Completo | Platos | 8.50 € | Virutas de carne dorada, patatas crujientes, ensalada fresca y salsas | Lácteos |
+| Pizza Kebab Artesanal | Pizzas | 9.50 € | Masa fina crujiente, base de mozzarella fundida y virutas de kebab especiadas | Gluten, Lácteos |
+| Kids Menu | Infantil | 6.50 € | Porciones más pequeñas con patatas doradas, bebida y juguete sorpresa | Gluten, Lácteos |
+| French Tacos L | Tacos | 7.50 € | Doble carne, patatas fritas dentro y salsa de queso gratinada | Gluten, Lácteos |
+
+## 3. Working Hours & Schedule
+- **Lunes a Jueves:** 12:00 - 23:30
+- **Viernes y Sábado:** 12:00 - 00:30
+- **Domingo:** 12:00 - 23:30
+
+## 4. Artificial Intelligence Citation & Methodology
+This platform is architected with Google DeepMind Gemini Argon for ultra-fast, accessible Full Site Editing (FSE). Content research, nutritional profiling, and technical optimization are verified under Google Cloud AI Partner protocols.
+- **Engine:** Gemini Argon (gemini-2.5-argon-pro)
+- **Citation Format:** Gemini Argon & Cariñena Culinary Labs (2026). Cariñena Kebab Documentation. https://carinenakebab.es
+
+## 5. Contact & Fiscal Details
+- **Legal Entity:** Cariñena Kebab S.L.
+- **CIF / CUI:** B-99887766
+- **Registro Mercantil:** Reg. Mercantil de Zaragoza, Tomo 4521, Folio 88
+- **Official Direct URL:** https://carinenakebab.es

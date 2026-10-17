@@ -95,4 +95,6 @@
 
   // Periodic refresh every 60 seconds
   setInterval(initLiveStatusPills, 60000);
+
+  window.evaluateSchedulePills = initLiveStatusPills;
 })();
