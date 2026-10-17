@@ -85,10 +85,52 @@ class Kebab_REST_API {
             'callback'            => [__CLASS__, 'get_live_status'],
             'permission_callback' => '__return_true',
         ]);
+
+        // WP Code Snippets Management
+        register_rest_route(self::NAMESPACE, '/snippets', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [__CLASS__, 'get_snippets'],
+                'permission_callback' => [__CLASS__, 'check_snippet_permission'],
+            ],
+            [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [__CLASS__, 'create_snippet'],
+                'permission_callback' => [__CLASS__, 'check_snippet_permission'],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/snippets/(?P<id>[a-zA-Z0-9_-]+)', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [__CLASS__, 'get_snippet'],
+                'permission_callback' => [__CLASS__, 'check_snippet_permission'],
+            ],
+            [
+                'methods'             => 'PATCH',
+                'callback'            => [__CLASS__, 'update_snippet'],
+                'permission_callback' => [__CLASS__, 'check_snippet_permission'],
+            ],
+            [
+                'methods'             => WP_REST_Server::DELETABLE,
+                'callback'            => [__CLASS__, 'delete_snippet'],
+                'permission_callback' => [__CLASS__, 'check_snippet_permission'],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/snippets/(?P<id>[a-zA-Z0-9_-]+)/toggle', [
+            'methods'             => WP_REST_Server::CREATABLE,
+            'callback'            => [__CLASS__, 'toggle_snippet'],
+            'permission_callback' => [__CLASS__, 'check_snippet_permission'],
+        ]);
     }
 
     public static function check_manage_permission() {
         return current_user_can('edit_theme_options');
+    }
+
+    public static function check_snippet_permission() {
+        return current_user_can('manage_options');
     }
 
     public static function get_nap() {
@@ -207,6 +249,88 @@ class Kebab_REST_API {
             'business_id'    => $nap['business_id'],
             'opening_hours'  => $nap['opening_hours'],
             'current_time'   => current_time('mysql'),
+        ]);
+    }
+
+    public static function get_snippets() {
+        $result = Kebab_Snippet_Bridge::get_all();
+        return rest_ensure_response([
+            'success'  => true,
+            'backend'  => $result['backend'],
+            'count'    => count($result['snippets']),
+            'snippets' => $result['snippets'],
+        ]);
+    }
+
+    public static function get_snippet($request) {
+        $id = $request->get_param('id');
+        $snippet = Kebab_Snippet_Bridge::get_one($id);
+        if (is_wp_error($snippet)) {
+            return $snippet;
+        }
+        return rest_ensure_response([
+            'success' => true,
+            'snippet' => $snippet,
+        ]);
+    }
+
+    public static function create_snippet($request) {
+        $params = $request->get_json_params();
+        if (empty($params)) {
+            return new WP_Error('empty_payload', 'Payload cannot be empty', ['status' => 400]);
+        }
+        $created = Kebab_Snippet_Bridge::create($params);
+        if (is_wp_error($created)) {
+            return $created;
+        }
+        return rest_ensure_response([
+            'success' => true,
+            'message' => 'Snippet created successfully',
+            'snippet' => $created,
+        ]);
+    }
+
+    public static function update_snippet($request) {
+        $id = $request->get_param('id');
+        $params = $request->get_json_params();
+        if (empty($params)) {
+            return new WP_Error('empty_payload', 'Payload cannot be empty', ['status' => 400]);
+        }
+        $updated = Kebab_Snippet_Bridge::update($id, $params);
+        if (is_wp_error($updated)) {
+            return $updated;
+        }
+        return rest_ensure_response([
+            'success' => true,
+            'message' => 'Snippet updated successfully',
+            'snippet' => $updated,
+        ]);
+    }
+
+    public static function toggle_snippet($request) {
+        $id = $request->get_param('id');
+        $params = $request->get_json_params();
+        $active = isset($params['active']) ? (bool)$params['active'] : true;
+        $updated = Kebab_Snippet_Bridge::toggle($id, $active);
+        if (is_wp_error($updated)) {
+            return $updated;
+        }
+        return rest_ensure_response([
+            'success' => true,
+            'message' => $active ? 'Snippet activated' : 'Snippet deactivated (kill switch triggered)',
+            'snippet' => $updated,
+        ]);
+    }
+
+    public static function delete_snippet($request) {
+        $id = $request->get_param('id');
+        $deleted = Kebab_Snippet_Bridge::delete($id);
+        if (is_wp_error($deleted)) {
+            return $deleted;
+        }
+        return rest_ensure_response([
+            'success' => (bool)$deleted,
+            'message' => 'Snippet deleted successfully',
         ]);
     }
 }

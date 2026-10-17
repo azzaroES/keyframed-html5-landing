@@ -1,0 +1,17 @@
+<?php
+/**
+ * Snippet Name: Google Tag Manager & Web Analytics
+ * Description: Injects custom GTM container script or analytics tag into head/footer
+ * Type: html
+ * Scope: frontend
+ * Active: false
+ * Modified: 2026-10-17 15:00:00
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Example: add_action('wp_head', function() {
+//     echo "<!-- GTM Container Placeholder -->\n";
+// });

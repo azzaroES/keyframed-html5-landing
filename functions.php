@@ -23,6 +23,7 @@ require_once KEBAB_THEME_DIR . '/inc/qr-generator.php';
 require_once KEBAB_THEME_DIR . '/inc/shortlinker.php';
 require_once KEBAB_THEME_DIR . '/inc/vcard-generator.php';
 require_once KEBAB_THEME_DIR . '/inc/lscache-compat.php';
+require_once KEBAB_THEME_DIR . '/inc/snippet-bridge.php';
 require_once KEBAB_THEME_DIR . '/inc/rest-api.php';
 require_once KEBAB_THEME_DIR . '/inc/ai-endpoints.php';
 require_once KEBAB_THEME_DIR . '/inc/starter-content.php';
