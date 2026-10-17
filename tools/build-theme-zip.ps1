@@ -15,8 +15,8 @@ if (Test-Path $DistDir) {
 }
 New-Item -ItemType Directory -Path $StagingDir -Force | Out-Null
 
-# 2. Copy core theme files
-$RootFiles = @("style.css", "theme.json", "DESIGN.md", "functions.php", "README.md")
+# 2. Copy core theme files (including index.php and style.css required by WP theme installer)
+$RootFiles = @("style.css", "index.php", "theme.json", "DESIGN.md", "functions.php", "README.md")
 foreach ($file in $RootFiles) {
     $src = Join-Path $RootDir $file
     if (Test-Path $src) {
@@ -43,16 +43,28 @@ if (Test-Path $AssetsSrc) {
     }
 }
 
-# 5. Compress into zip archive using .NET ZipFile
-Write-Host "==> Compressing into $ZipFile..." -ForegroundColor Cyan
+# 5. Compress into zip archive with standard UNIX forward-slashes and root directory wrapper
+Write-Host "==> Creating clean zip archive with forward slashes for Linux/WordPress compatibility..." -ForegroundColor Cyan
+Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-Start-Sleep -Milliseconds 500
 
 if (Test-Path $ZipFile) {
     Remove-Item -Path $ZipFile -Force
 }
 
-[System.IO.Compression.ZipFile]::CreateFromDirectory($StagingDir, $ZipFile, [System.IO.Compression.CompressionLevel]::Optimal, $false)
+$zip = [System.IO.Compression.ZipFile]::Open($ZipFile, [System.IO.Compression.ZipArchiveMode]::Create)
+
+$allFiles = Get-ChildItem -Path $StagingDir -Recurse -File
+$stagingLength = $StagingDir.Length
+
+foreach ($file in $allFiles) {
+    $relative = $file.FullName.Substring($stagingLength).TrimStart('\', '/')
+    # Enforce forward slashes for all zip entry names (critical for Linux server unzipping!)
+    $entryName = $ThemeSlug + "/" + ($relative -replace '\\', '/')
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $file.FullName, $entryName, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+}
+
+$zip.Dispose()
 
 $ZipSize = (Get-Item $ZipFile).Length / 1MB
 Write-Host ("==> Successfully built: {0} ({1:N2} MB)" -f $ZipFile, $ZipSize) -ForegroundColor Green
