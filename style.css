@@ -1,0 +1,89 @@
+/*
+Theme Name: Cariñena Kebab FSE
+Theme URI: https://carinenakebab.es
+Author: Antigravity & Gemini Argon
+Author URI: https://carinenakebab.es
+Description: Ultra-lightweight Full Site Editing (FSE) block theme featuring cinematic 3D keyframe canvas scrubber, universal multi-niche Google NAP engine, zero-dependency SVG QR generator, native /go/ shortlinker, LiteSpeed Cache & Super PWA synergy, and complete Novamira MCP agentic/human visual editable design token contract.
+Version: 2.0.0
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: carinena-kebab-fse
+Tags: full-site-editing, block-themes, custom-colors, custom-spacing, custom-typography, grid-layout, wide-blocks, translation-ready
+*/
+
+/* ==========================================================================
+   CSS Bridge: Map theme.json CSS variables to Theme Design Tokens
+   ========================================================================== */
+:root {
+  --color-crust: var(--wp--preset--color--crust, #2C1810);
+  --color-gold: var(--wp--preset--color--gold, #C9A962);
+  --color-gold-bright: var(--wp--preset--color--gold-bright, #DFC482);
+  --color-cream: var(--wp--preset--color--cream, #F5F0E8);
+  --color-ivory: var(--wp--preset--color--ivory, #FEFDFB);
+  --color-night: var(--wp--preset--color--night, #1A1A1A);
+  --color-night-pitch: var(--wp--preset--color--night-pitch, #0F0F0F);
+  --color-night-surface: var(--wp--preset--color--night-surface, #242424);
+  --color-accent: var(--wp--preset--color--accent, #EE5862);
+  --color-muted: var(--wp--preset--color--muted, #A09A93);
+  --color-surface-glass: var(--wp--preset--color--glass-dark, rgba(26, 26, 26, 0.75));
+  --color-border-glass: var(--wp--preset--color--glass-border, rgba(201, 169, 98, 0.25));
+
+  /* Typography mapping */
+  --font-display: var(--wp--preset--font-family--archivo, "Archivo", sans-serif);
+  --font-body: var(--wp--preset--font-family--lexend, "Lexend", sans-serif);
+
+  /* Spacing 8px Grid System (RULE[spacing.md]) */
+  --space-8: var(--wp--preset--spacing--10, 8px);
+  --space-16: var(--wp--preset--spacing--20, 16px);
+  --space-24: var(--wp--preset--spacing--30, 24px);
+  --space-32: var(--wp--preset--spacing--40, 32px);
+  --space-40: var(--wp--preset--spacing--50, 40px);
+  --space-48: var(--wp--preset--spacing--60, 48px);
+  --space-64: var(--wp--preset--spacing--70, 64px);
+  --space-80: var(--wp--preset--spacing--80, 80px);
+
+  /* Border radius */
+  --radius-sm: var(--wp--custom--radius--sm, 4px);
+  --radius-md: var(--wp--custom--radius--md, 8px);
+  --radius-lg: var(--wp--custom--radius--lg, 16px);
+  --radius-xl: var(--wp--custom--radius--xl, 24px);
+  --radius-pill: var(--wp--custom--radius--pill, 9999px);
+}
+
+/* Ensure body and html adhere to dark luxury baseline */
+html, body {
+  background-color: var(--color-night);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility Focus Ring (RULE[user_global] WCAG 2.2: 3:1 min contrast, 2px thickness) */
+:focus-visible {
+  outline: 2px solid var(--color-gold) !important;
+  outline-offset: 3px !important;
+}
+
+/* Accessibility: Touch target sizes >= 24px, recommended 44px+ for mobile */
+button, a, input, select, textarea {
+  min-height: 24px;
+  min-width: 24px;
+}
+
+/* Accessibility: Respect prefers-reduced-motion (RULE[animations.md]) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

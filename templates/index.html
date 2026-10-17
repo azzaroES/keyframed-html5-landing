@@ -1,0 +1,38 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<main id="main" tabindex="-1" class="container" style="padding-top: var(--space-64); padding-bottom: var(--space-80);">
+  <!-- wp:group {"tagName":"header","className":"section-head section-head--center"} -->
+  <header class="section-head section-head--center">
+    <!-- wp:query-title {"type":"general","className":"section-title"} /-->
+  </header>
+  <!-- /wp:group -->
+
+  <!-- wp:query {"queryId":2,"query":{"perPage":9,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true}} -->
+  <div class="wp-block-query">
+    <!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+      <!-- wp:group {"tagName":"article","className":"kebab-post-card"} -->
+      <article class="kebab-post-card">
+        <!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/9"} /-->
+        <div class="kebab-post-card__body">
+          <div class="kebab-post-card__meta">
+            <!-- wp:post-terms {"term":"category"} /-->
+            <!-- wp:post-date /-->
+          </div>
+          <!-- wp:post-title {"isLink":true,"level":2,"className":"kebab-post-card__title"} /-->
+          <!-- wp:post-excerpt {"moreText":"Leer más →"} /-->
+        </div>
+      </article>
+      <!-- /wp:group -->
+    <!-- /wp:post-template -->
+
+    <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+      <!-- wp:query-pagination-previous /-->
+      <!-- wp:query-pagination-numbers /-->
+      <!-- wp:query-pagination-next /-->
+    <!-- /wp:query-pagination -->
+  </div>
+  <!-- /wp:query -->
+</main>
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+<!-- wp:template-part {"slug":"bottom-app-bar","tagName":"nav"} /-->

@@ -15,6 +15,10 @@
     const title = film.querySelector(".film__title");
     const veil = film.querySelector(".film__veil");
 
+    if (document.body.classList.contains("block-editor-page") || (window.kebabThemeConfig && window.kebabThemeConfig.isEditor)) {
+      return; // Gutenberg editor preview handled by film-editor-guard.js
+    }
+
     if (!stage || !mount || !canvas || typeof canvas.getContext !== "function") {
       return;
     }

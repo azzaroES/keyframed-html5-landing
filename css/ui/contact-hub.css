@@ -1,0 +1,303 @@
+/* ==========================================================================
+   Contact Hub Styling (Foto V-MAG Reference)
+   Multi-Niche Google NAP Hub with 4 Action Cards, Live Hours, Map & Fiscal Badges
+   ========================================================================== */
+
+.kebab-contact-hub {
+  padding: var(--space-80, 80px) var(--space-24, 24px) var(--space-64, 64px);
+  max-width: 1160px;
+  margin: 0 auto;
+  font-family: var(--font-body, "Lexend", sans-serif);
+}
+
+.kebab-contact-hero {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto var(--space-48, 48px);
+}
+
+.kebab-contact-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(201, 169, 98, 0.12);
+  border: 1px solid var(--color-gold, #C9A962);
+  border-radius: var(--radius-pill, 9999px);
+  color: var(--color-gold-bright, #DFC482);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-16, 16px);
+}
+
+.kebab-contact-title {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-size: clamp(2.25rem, 4vw + 1rem, 3.5rem);
+  font-weight: 800;
+  color: var(--color-ivory, #FEFDFB);
+  line-height: 1.15;
+  margin: 0 0 var(--space-16, 16px);
+}
+
+.kebab-contact-sub {
+  color: var(--color-cream, #F5F0E8);
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin-bottom: var(--space-32, 32px);
+  line-height: 1.6;
+}
+
+/* Big "Salvează contactul nostru" vCard CTA */
+.kebab-vcard-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #DFC482 0%, #C9A962 100%);
+  color: #1A1A1A;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill, 9999px);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(201, 169, 98, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 48px;
+}
+
+.kebab-vcard-btn:hover,
+.kebab-vcard-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(201, 169, 98, 0.5);
+  color: #0F0F0F;
+}
+
+.kebab-vcard-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* 4 Action Cards Grid */
+.kebab-contact-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-24, 24px);
+  margin-bottom: var(--space-48, 48px);
+}
+
+.kebab-contact-card {
+  background: rgba(36, 36, 36, 0.7);
+  border: 1px solid var(--color-border-glass, rgba(201, 169, 98, 0.2));
+  border-radius: var(--radius-lg, 16px);
+  padding: var(--space-32, 32px) var(--space-24, 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.kebab-contact-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-gold, #C9A962);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.kebab-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: var(--space-16, 16px);
+}
+
+.kebab-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(201, 169, 98, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold, #C9A962);
+  flex-shrink: 0;
+}
+
+.kebab-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.kebab-card-title {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-ivory, #FEFDFB);
+  margin: 0;
+}
+
+.kebab-card-desc {
+  color: var(--color-cream, #F5F0E8);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-24, 24px);
+  flex-grow: 1;
+}
+
+.kebab-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill, 9999px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  min-height: 44px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.kebab-card-cta--primary {
+  background: var(--color-gold, #C9A962);
+  color: var(--color-night, #1A1A1A);
+}
+
+.kebab-card-cta--primary:hover {
+  background: var(--color-gold-bright, #DFC482);
+  color: #000;
+}
+
+.kebab-card-cta--outline {
+  background: transparent;
+  border: 1px solid var(--color-gold, #C9A962);
+  color: var(--color-gold-bright, #DFC482);
+}
+
+.kebab-card-cta--outline:hover {
+  background: rgba(201, 169, 98, 0.15);
+}
+
+/* Schedule & Map Two-Column Section */
+.kebab-contact-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-32, 32px);
+  margin-bottom: var(--space-48, 48px);
+}
+
+@media (max-width: 880px) {
+  .kebab-contact-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kebab-schedule-box,
+.kebab-map-box {
+  background: rgba(36, 36, 36, 0.7);
+  border: 1px solid var(--color-border-glass, rgba(201, 169, 98, 0.2));
+  border-radius: var(--radius-lg, 16px);
+  padding: var(--space-32, 32px);
+  backdrop-filter: blur(16px);
+}
+
+.kebab-schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-24, 24px);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.kebab-schedule-title {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-ivory, #FEFDFB);
+  margin: 0;
+}
+
+.kebab-hours-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kebab-hours-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.9375rem;
+  color: var(--color-cream, #F5F0E8);
+}
+
+.kebab-hours-item:last-child {
+  border-bottom: none;
+}
+
+.kebab-hours-day {
+  font-weight: 500;
+}
+
+.kebab-hours-time {
+  color: var(--color-gold-bright, #DFC482);
+  font-weight: 600;
+}
+
+.kebab-map-frame {
+  width: 100%;
+  height: 280px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  margin-top: var(--space-16, 16px);
+}
+
+/* Fiscal Trust & QR Code Footer */
+.kebab-contact-trust-footer {
+  background: rgba(22, 22, 22, 0.85);
+  border: 1px solid var(--color-border-glass, rgba(201, 169, 98, 0.2));
+  border-radius: var(--radius-lg, 16px);
+  padding: var(--space-32, 32px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-32, 32px);
+  flex-wrap: wrap;
+}
+
+.kebab-trust-info {
+  flex: 1;
+  min-width: 280px;
+}
+
+.kebab-trust-heading {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-size: 1.125rem;
+  color: var(--color-ivory, #FEFDFB);
+  margin: 0 0 var(--space-8, 8px);
+}
+
+.kebab-trust-meta {
+  font-size: 0.875rem;
+  color: var(--color-muted, #A09A93);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.kebab-qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.kebab-qr-label {
+  font-size: 0.75rem;
+  color: var(--color-cream, #F5F0E8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}

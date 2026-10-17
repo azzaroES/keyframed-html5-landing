@@ -14,3 +14,5 @@ desktop.ini
 # Local backup directories
 assets/frames_chicken_backup/
 *.zip
+dist/
+

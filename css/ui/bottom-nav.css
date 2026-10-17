@@ -1,0 +1,101 @@
+/* ==========================================================================
+   Adaptive Mobile Bottom App Bar (Inner Pages Only: Blog, Single, Contact)
+   Front-page keeps the custom radial FAB menu.
+   ========================================================================== */
+
+.kebab-bottom-app-bar {
+  display: none; /* Hidden by default on desktop; active on mobile / tablet */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: rgba(22, 22, 22, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--color-border-glass, rgba(201, 169, 98, 0.25));
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6);
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Only display for inner pages (body.kebab-inner-page) */
+body.kebab-inner-page .kebab-bottom-app-bar {
+  display: block;
+}
+
+.kebab-bottom-nav-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kebab-bottom-nav-item {
+  flex: 1;
+  text-align: center;
+}
+
+.kebab-bottom-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--color-muted, #A09A93);
+  text-decoration: none;
+  min-height: 48px; /* Strict touch target requirement */
+  min-width: 48px;
+  padding: 4px 6px;
+  border-radius: var(--radius-md, 8px);
+  transition: color 0.2s ease, transform 0.2s ease;
+  font-family: var(--font-body, "Lexend", sans-serif);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.kebab-bottom-nav-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.kebab-bottom-nav-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+.kebab-bottom-nav-link:hover,
+.kebab-bottom-nav-link:focus-visible {
+  color: var(--color-gold-bright, #DFC482);
+}
+
+.kebab-bottom-nav-link.is-active {
+  color: var(--color-gold, #C9A962);
+  font-weight: 600;
+}
+
+.kebab-bottom-nav-link.is-active .kebab-bottom-nav-icon {
+  transform: translateY(-2px);
+}
+
+.kebab-bottom-nav-link.is-active .kebab-bottom-nav-icon svg {
+  stroke: var(--color-gold, #C9A962);
+  filter: drop-shadow(0 0 6px rgba(201, 169, 98, 0.4));
+}
+
+/* Ensure bottom padding on inner pages so content is not obscured by bottom bar */
+body.kebab-inner-page {
+  padding-bottom: 74px;
+}

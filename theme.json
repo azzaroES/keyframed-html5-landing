@@ -1,0 +1,309 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "title": "Cariñena Kebab FSE",
+  "settings": {
+    "appearanceTools": true,
+    "useRootPaddingAwareAlignments": true,
+    "layout": {
+      "contentSize": "1120px",
+      "wideSize": "1360px"
+    },
+    "color": {
+      "custom": true,
+      "customDuotone": false,
+      "customGradient": true,
+      "defaultGradients": false,
+      "defaultPalette": false,
+      "palette": [
+        {
+          "name": "Crust",
+          "slug": "crust",
+          "color": "#2C1810"
+        },
+        {
+          "name": "Gold",
+          "slug": "gold",
+          "color": "#C9A962"
+        },
+        {
+          "name": "Gold Bright",
+          "slug": "gold-bright",
+          "color": "#DFC482"
+        },
+        {
+          "name": "Cream",
+          "slug": "cream",
+          "color": "#F5F0E8"
+        },
+        {
+          "name": "Ivory",
+          "slug": "ivory",
+          "color": "#FEFDFB"
+        },
+        {
+          "name": "Night",
+          "slug": "night",
+          "color": "#1A1A1A"
+        },
+        {
+          "name": "Night Pitch",
+          "slug": "night-pitch",
+          "color": "#0F0F0F"
+        },
+        {
+          "name": "Night Surface",
+          "slug": "night-surface",
+          "color": "#242424"
+        },
+        {
+          "name": "Accent Coral",
+          "slug": "accent",
+          "color": "#EE5862"
+        },
+        {
+          "name": "Muted Text",
+          "slug": "muted",
+          "color": "#A09A93"
+        },
+        {
+          "name": "Glass Dark",
+          "slug": "glass-dark",
+          "color": "rgba(26, 26, 26, 0.75)"
+        },
+        {
+          "name": "Glass Border",
+          "slug": "glass-border",
+          "color": "rgba(201, 169, 98, 0.25)"
+        }
+      ],
+      "gradients": [
+        {
+          "name": "Gold Radial Glow",
+          "slug": "gold-glow",
+          "gradient": "radial-gradient(circle at center, rgba(201, 169, 98, 0.25) 0%, rgba(26, 26, 26, 0) 70%)"
+        },
+        {
+          "name": "Hero Vignette",
+          "slug": "hero-vignette",
+          "gradient": "linear-gradient(180deg, rgba(15,15,15,0.7) 0%, rgba(15,15,15,0.2) 40%, rgba(15,15,15,0.85) 100%)"
+        },
+        {
+          "name": "Gold Metallic Button",
+          "slug": "gold-btn",
+          "gradient": "linear-gradient(135deg, #DFC482 0%, #C9A962 100%)"
+        }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "\"Archivo\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "name": "Archivo (Display)",
+          "slug": "archivo",
+          "fontFace": [
+            {
+              "fontFamily": "Archivo",
+              "fontWeight": "700 900",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./fonts/archivo-display.woff2"]
+            }
+          ]
+        },
+        {
+          "fontFamily": "\"Lexend\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "name": "Lexend (Body & UI)",
+          "slug": "lexend",
+          "fontFace": [
+            {
+              "fontFamily": "Lexend",
+              "fontWeight": "300 600",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./fonts/lexend-body.woff2"]
+            }
+          ]
+        }
+      ],
+      "fontSizes": [
+        {
+          "name": "Micro",
+          "slug": "micro",
+          "size": "0.75rem"
+        },
+        {
+          "name": "Small",
+          "slug": "small",
+          "size": "0.875rem"
+        },
+        {
+          "name": "Base (Body)",
+          "slug": "medium",
+          "size": "1rem"
+        },
+        {
+          "name": "Medium (Cast)",
+          "slug": "large",
+          "size": "1.25rem"
+        },
+        {
+          "name": "H3 (Subhead)",
+          "slug": "x-large",
+          "size": "clamp(1.5rem, 2vw + 1rem, 2rem)"
+        },
+        {
+          "name": "H2 (Section)",
+          "slug": "xx-large",
+          "size": "clamp(2rem, 3.5vw + 1rem, 3.25rem)"
+        },
+        {
+          "name": "Hero (Display)",
+          "slug": "hero",
+          "size": "clamp(2.75rem, 7vw + 1rem, 6.25rem)"
+        }
+      ]
+    },
+    "spacing": {
+      "customSpacingSize": true,
+      "units": ["px", "rem", "vh", "vw", "%"],
+      "spacingScale": {
+        "operator": "*",
+        "increment": 8,
+        "steps": 10,
+        "mediumStep": 24,
+        "unit": "px"
+      },
+      "spacingSizes": [
+        { "name": "8px", "slug": "10", "size": "8px" },
+        { "name": "16px", "slug": "20", "size": "16px" },
+        { "name": "24px", "slug": "30", "size": "24px" },
+        { "name": "32px", "slug": "40", "size": "32px" },
+        { "name": "40px", "slug": "50", "size": "40px" },
+        { "name": "48px", "slug": "60", "size": "48px" },
+        { "name": "64px", "slug": "70", "size": "64px" },
+        { "name": "80px", "slug": "80", "size": "80px" }
+      ]
+    },
+    "border": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "custom": {
+      "radius": {
+        "sm": "4px",
+        "md": "8px",
+        "lg": "16px",
+        "xl": "24px",
+        "pill": "9999px"
+      },
+      "shadow": {
+        "card": "0 8px 32px rgba(0, 0, 0, 0.45)",
+        "goldGlow": "0 0 35px rgba(201, 169, 98, 0.35)",
+        "terminal": "0 20px 60px rgba(0, 0, 0, 0.85)"
+      },
+      "blur": {
+        "card": "16px",
+        "nav": "20px"
+      }
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var(--wp--preset--color--night)",
+      "text": "var(--wp--preset--color--cream)"
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--lexend)",
+      "fontSize": "var(--wp--preset--font-size--medium)",
+      "lineHeight": "1.6"
+    },
+    "elements": {
+      "link": {
+        "color": {
+          "text": "var(--wp--preset--color--gold)"
+        },
+        ":hover": {
+          "color": {
+            "text": "var(--wp--preset--color--gold-bright)"
+          }
+        }
+      },
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--archivo)",
+          "fontWeight": "800",
+          "lineHeight": "1.15"
+        },
+        "color": {
+          "text": "var(--wp--preset--color--ivory)"
+        }
+      },
+      "h1": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--hero)"
+        }
+      },
+      "h2": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--xx-large)"
+        }
+      },
+      "h3": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--x-large)"
+        }
+      },
+      "button": {
+        "border": {
+          "radius": "var(--wp--custom--radius--pill)"
+        },
+        "color": {
+          "background": "var(--wp--preset--color--gold)",
+          "text": "var(--wp--preset--color--night)"
+        },
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--lexend)",
+          "fontWeight": "600"
+        }
+      }
+    }
+  },
+  "templateParts": [
+    {
+      "name": "header",
+      "title": "Header",
+      "area": "header"
+    },
+    {
+      "name": "footer",
+      "title": "Footer (4-Row Spaced with Gemini Terminal)",
+      "area": "footer"
+    },
+    {
+      "name": "fab-nav",
+      "title": "Front-Page Radial FAB Navigation",
+      "area": "general"
+    },
+    {
+      "name": "bottom-app-bar",
+      "title": "Inner Pages Sticky Bottom App Bar",
+      "area": "general"
+    }
+  ],
+  "customTemplates": [
+    {
+      "name": "page-contact",
+      "title": "Contact Hub (Foto V-MAG Multi-Niche NAP)",
+      "postTypes": ["page"]
+    },
+    {
+      "name": "single-cinematic",
+      "title": "Cinematic Video-to-Sheet Blog Post",
+      "postTypes": ["post"]
+    }
+  ]
+}
