@@ -1,0 +1,394 @@
+/* Footer Component — Google & Gemini Argon Terminal Badge & Popup
+   8px grid & Design Token System
+   ========================================================================== */
+
+/* 4th Row: Google Cloud AI Partner & Gemini Argon Terminal Badge */
+.site-footer__row--argon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--space-1);
+}
+
+.argon-terminal-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 9999px;
+  outline: none;
+}
+
+/* Accessible focus ring on the interactive badge */
+.argon-terminal-badge:focus-visible .argon-pill {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-color: rgba(66, 133, 244, 0.7);
+  box-shadow: 0 0 16px rgba(66, 133, 244, 0.35);
+}
+
+/* The interactive pill button */
+.argon-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 38px;
+  padding: 6px var(--space-2);
+  background: rgba(26, 26, 26, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--on-surface-soft);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition:
+    background var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out),
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    box-shadow var(--duration-ui) var(--ease-out);
+}
+
+.argon-terminal-badge:hover .argon-pill,
+.argon-terminal-badge.is-active .argon-pill {
+  background: rgba(36, 36, 44, 0.95);
+  border-color: rgba(66, 133, 244, 0.55);
+  color: var(--on-surface);
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    0 0 14px rgba(66, 133, 244, 0.3);
+}
+
+.google-logo {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.argon-pill__text {
+  font-family: var(--font-body);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-ui);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* Inline small Gemini star inside the pill */
+.gemini-star--inline {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 3px rgba(66, 133, 244, 0.8));
+  transition:
+    transform var(--duration-ui) var(--ease-out),
+    filter var(--duration-ui) var(--ease-out);
+}
+
+.argon-terminal-badge:hover .gemini-star--inline,
+.argon-terminal-badge.is-active .gemini-star--inline {
+  transform: rotate(45deg) scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(155, 114, 207, 0.9));
+}
+
+/* ==========================================================================
+   Code Terminal Popup Window (Hover / Focus / Active)
+   ========================================================================== */
+
+.terminal-popup {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.96);
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  background: rgba(11, 13, 19, 0.96);
+  border: 1px solid rgba(138, 180, 248, 0.35);
+  border-radius: var(--space-1);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.75),
+    0 0 24px rgba(66, 133, 244, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 100;
+  text-align: left;
+  transition:
+    opacity 0.28s var(--ease-out),
+    transform 0.28s var(--ease-out),
+    visibility 0.28s var(--ease-out);
+}
+
+/* Triangular anchor notch pointing down toward the pill */
+.terminal-popup::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px 7px 0 7px;
+  border-style: solid;
+  border-color: rgba(138, 180, 248, 0.35) transparent transparent transparent;
+}
+
+/* Trigger popup visibility on hover, keyboard focus, and mobile tap toggle */
+.argon-terminal-badge:hover .terminal-popup,
+.argon-terminal-badge:focus-within .terminal-popup,
+.argon-terminal-badge.is-active .terminal-popup {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Terminal Title Bar */
+.terminal-popup__head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-1);
+  padding: 8px var(--space-2);
+  background: rgba(22, 27, 38, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: calc(var(--space-1) - 1px) calc(var(--space-1) - 1px) 0 0;
+}
+
+.terminal-popup__dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot--red {
+  background-color: #ff5f56;
+  box-shadow: 0 0 6px rgba(255, 95, 86, 0.6);
+}
+
+.terminal-dot--yellow {
+  background-color: #ffbd2e;
+  box-shadow: 0 0 6px rgba(255, 189, 46, 0.6);
+}
+
+.terminal-dot--green {
+  background-color: #27c93f;
+  box-shadow: 0 0 6px rgba(39, 201, 63, 0.6);
+}
+
+.terminal-popup__title {
+  font-family: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Consolas, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  margin-left: 4px;
+  letter-spacing: 0.02em;
+}
+
+/* Terminal Body */
+.terminal-popup__body {
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.terminal-popup__line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-prompt {
+  color: #34A853;
+  font-weight: 700;
+  user-select: none;
+}
+
+.terminal-cmd {
+  color: #8AB4F8;
+  font-weight: 500;
+}
+
+/* Sharp Glowing Gemini Hero Feature */
+.terminal-popup__gemini-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 8px var(--space-1);
+  background: rgba(66, 133, 244, 0.08);
+  border: 1px solid rgba(66, 133, 244, 0.28);
+  border-radius: 6px;
+}
+
+/* Razor-sharp high contrast highlighted Gemini Star */
+.gemini-star--hero {
+  display: block;
+  flex-shrink: 0;
+  filter:
+    drop-shadow(0 0 4px #4285F4)
+    drop-shadow(0 0 10px rgba(66, 133, 244, 0.95))
+    drop-shadow(0 0 18px rgba(155, 114, 207, 0.85));
+  animation: gemini-sharp-glow 3s ease-in-out infinite;
+}
+
+@keyframes gemini-sharp-glow {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter:
+      drop-shadow(0 0 4px #4285F4)
+      drop-shadow(0 0 10px rgba(66, 133, 244, 0.95))
+      drop-shadow(0 0 18px rgba(155, 114, 207, 0.85));
+  }
+  50% {
+    transform: scale(1.08) rotate(6deg);
+    filter:
+      drop-shadow(0 0 6px #1BA1E3)
+      drop-shadow(0 0 16px rgba(66, 133, 244, 1))
+      drop-shadow(0 0 26px rgba(217, 101, 112, 0.9));
+  }
+}
+
+.terminal-hero-text {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: #E8EAED;
+  letter-spacing: 0.01em;
+}
+
+.terminal-hero-text strong {
+  font-weight: 700;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #8AB4F8 0%, #C58AF9 50%, #F28B82 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Terminal Specs List */
+.terminal-popup__specs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 2px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.terminal-spec {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1);
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.terminal-key {
+  color: rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+}
+
+.terminal-val {
+  color: #E8EAED;
+  font-weight: 500;
+  text-align: right;
+}
+
+.terminal-val--cyan {
+  color: #8AB4F8;
+}
+
+.terminal-val--gold {
+  color: var(--color-gold);
+}
+
+.terminal-val--green {
+  color: #81C995;
+}
+
+.terminal-val--active {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #81C995;
+  font-weight: 600;
+}
+
+.terminal-status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #34A853;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #34A853;
+  animation: status-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* Terminal blinking cursor */
+.terminal-cursor {
+  display: inline-block;
+  color: #34A853;
+  animation: terminal-blink 1s steps(2, start) infinite;
+}
+
+@keyframes terminal-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .gemini-star--hero,
+  .terminal-status-dot,
+  .terminal-cursor {
+    animation: none;
+  }
+}
+
+/* Mobile responsive constraints */
+@media (max-width: 859px) {
+  .argon-pill {
+    min-height: 44px; /* WCAG 2.2 touch target compliance */
+    padding: 8px var(--space-2);
+  }
+
+  .terminal-popup {
+    width: 300px;
+    bottom: calc(100% + 10px);
+  }
+
+  .terminal-popup__body {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .terminal-spec {
+    font-size: 0.65rem;
+  }
+}

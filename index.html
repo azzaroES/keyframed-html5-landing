@@ -24,7 +24,10 @@
   <link rel="stylesheet" href="css/sections/pillars.css">
   <link rel="stylesheet" href="css/sections/menu.css">
   <link rel="stylesheet" href="css/sections/club.css">
-  <link rel="stylesheet" href="css/sections/footer.css">
+  <link rel="stylesheet" href="css/sections/footer/hero.css">
+  <link rel="stylesheet" href="css/sections/footer/nav.css">
+  <link rel="stylesheet" href="css/sections/footer/bottom.css">
+  <link rel="stylesheet" href="css/sections/footer/terminal.css">
   <link rel="stylesheet" href="css/ui/a11y-panel.css">
   <link rel="stylesheet" href="css/ui/whatsapp.css">
   <link rel="stylesheet" href="css/ui/fab-nav.css">
@@ -413,9 +416,97 @@
         </ul>
       </div>
       <div class="site-footer__bottom">
-        <p class="site-footer__legal">© 2026 Cariñena Kebab Tacos Pizzas</p>
-        <address class="site-footer__place">Av. del Ejército, 28, 50400 Cariñena</address>
-        <p class="site-footer__credit">Hecho con <span class="heart" role="img" aria-label="amor">❤️</span> por digitalstudio<b>.PRO</b></p>
+        <!-- Row 1: Copyright -->
+        <div class="site-footer__row site-footer__row--legal">
+          <p class="site-footer__legal">© 2026 Cariñena Kebab Tacos Pizzas &middot; Todos los derechos reservados</p>
+        </div>
+
+        <!-- Row 2: Address with clickable map pin -->
+        <div class="site-footer__row site-footer__row--place">
+          <address class="site-footer__place">
+            <svg class="site-footer__pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"></path>
+              <circle cx="12" cy="10" r="2.4"></circle>
+            </svg>
+            <a href="https://share.google/WhayzCt1uEAfCi447" target="_blank" rel="noopener">Av. del Ejército, 28, 50400 Cariñena (Zaragoza)</a>
+          </address>
+        </div>
+
+        <!-- Row 3: Made by Credit -->
+        <div class="site-footer__row site-footer__row--credit">
+          <p class="site-footer__credit">Diseñado y desarrollado con <span class="heart" role="img" aria-label="amor">❤️</span> por digitalstudio<b>.PRO</b></p>
+        </div>
+
+        <!-- Row 4: Google & Gemini Argon Terminal Badge -->
+        <div class="site-footer__row site-footer__row--argon">
+          <div class="argon-terminal-badge" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Ver arquitectura Gemini Argon">
+            <div class="argon-pill">
+              <!-- Official Google 4-Color G Logo -->
+              <svg class="google-logo" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24Z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15Z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+              </svg>
+              <span class="argon-pill__text">Google Cloud AI Partner</span>
+              <!-- Sharp Glowing Gemini Star -->
+              <svg class="gemini-star gemini-star--inline" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <defs>
+                  <linearGradient id="gemini-inline-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4285F4" />
+                    <stop offset="50%" stop-color="#9B72CF" />
+                    <stop offset="100%" stop-color="#D96570" />
+                  </linearGradient>
+                </defs>
+                <path fill="url(#gemini-inline-grad)" d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z"/>
+              </svg>
+            </div>
+
+            <!-- Terminal Window Popup -->
+            <div class="terminal-popup" role="dialog" aria-label="Terminal de Arquitectura Gemini Argon">
+              <div class="terminal-popup__head">
+                <div class="terminal-popup__dots" aria-hidden="true">
+                  <span class="terminal-dot terminal-dot--red"></span>
+                  <span class="terminal-dot terminal-dot--yellow"></span>
+                  <span class="terminal-dot terminal-dot--green"></span>
+                </div>
+                <span class="terminal-popup__title">gemini-argon@system:~</span>
+              </div>
+              <div class="terminal-popup__body">
+                <div class="terminal-popup__line terminal-popup__line--cmd">
+                  <span class="terminal-prompt">$</span>
+                  <span class="terminal-cmd">argon --inspect-architecture</span>
+                </div>
+                <div class="terminal-popup__gemini-hero">
+                  <!-- Sharp Electric Highlighted Gemini Logo -->
+                  <svg class="gemini-star gemini-star--hero" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="gemini-hero-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1BA1E3" />
+                        <stop offset="35%" stop-color="#4285F4" />
+                        <stop offset="70%" stop-color="#9B72CF" />
+                        <stop offset="100%" stop-color="#F29900" />
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#gemini-hero-grad)" d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z"/>
+                  </svg>
+                  <span class="terminal-hero-text">Architected by <strong>Gemini Argon</strong></span>
+                </div>
+                <div class="terminal-popup__specs">
+                  <p class="terminal-spec"><span class="terminal-key">Engine:</span> <span class="terminal-val terminal-val--cyan">Google DeepMind · Gemini Argon</span></p>
+                  <p class="terminal-spec"><span class="terminal-key">Pipeline:</span> <span class="terminal-val terminal-val--gold">240-Frame Keyframe Scrubber</span></p>
+                  <p class="terminal-spec"><span class="terminal-key">Rendering:</span> <span class="terminal-val terminal-val--green">60 FPS Hardware Composite</span></p>
+                  <p class="terminal-spec"><span class="terminal-key">Compliance:</span> <span class="terminal-val">WCAG 2.2 a11y &middot; Semantic HTML5</span></p>
+                  <p class="terminal-spec"><span class="terminal-key">Status:</span> <span class="terminal-val terminal-val--active"><span class="terminal-status-dot"></span> OPERATIONAL</span></p>
+                </div>
+                <div class="terminal-popup__line terminal-popup__line--cursor">
+                  <span class="terminal-prompt">$</span>
+                  <span class="terminal-cursor" aria-hidden="true">█</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </footer>

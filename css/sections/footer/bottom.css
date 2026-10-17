@@ -1,0 +1,144 @@
+/* Footer Component — Bottom Rows (Legal, Address, Credits)
+   8px grid & Design Token System
+   ========================================================================== */
+
+/* 4 · Bottom Rows: Separated generous vertical rows on both desktop and mobile */
+.site-footer__bottom {
+  margin-top: var(--space-4);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4); /* Generous 32px vertical separation across rows */
+  font-size: var(--text-small);
+  color: var(--on-surface-soft);
+  text-align: center;
+}
+
+/* Individual full-width centered rows */
+.site-footer__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Row 1: Legal Copyright */
+.site-footer__legal {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--on-surface-soft);
+  font-weight: var(--weight-body);
+  letter-spacing: 0.01em;
+}
+
+/* Row 2: Address with interactive map pin */
+.site-footer__place {
+  font-style: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+
+.site-footer__pin-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-ink);
+  flex-shrink: 0;
+  transition: transform var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__place a {
+  color: var(--on-surface);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    background-color var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__place a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.site-footer__place a:hover {
+  color: var(--accent-ink);
+  background-color: var(--color-gold-a08);
+}
+
+.site-footer__place:hover .site-footer__pin-icon {
+  transform: translateY(-2px);
+}
+
+/* Row 3: Design & Development Credit */
+.site-footer__credit {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--on-surface-soft);
+}
+
+.site-footer__credit b {
+  font-weight: var(--weight-display);
+  color: var(--accent-ink);
+}
+
+.heart {
+  display: inline-block;
+  margin-inline: 2px;
+  animation: heart-beat 1.4s ease-in-out infinite;
+}
+
+@keyframes heart-beat {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.25);
+  }
+  30% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.18);
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .heart {
+    animation: none;
+  }
+}
+
+/* Responsive mobile adjustments */
+@media (max-width: 859px) {
+  .site-footer__bottom {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    gap: var(--space-3); /* Distinct 24px spacing on mobile */
+    font-size: var(--text-micro);
+  }
+
+  .site-footer__legal,
+  .site-footer__place,
+  .site-footer__credit {
+    font-size: var(--text-micro);
+  }
+
+  .site-footer__pin-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

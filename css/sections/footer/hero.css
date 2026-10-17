@@ -1,0 +1,282 @@
+/* Footer Component — Hero (Logo, Direct Phone Calling, Desliza)
+   8px grid & Design Token System
+   ========================================================================== */
+
+.site-footer {
+  padding-block: var(--space-6) var(--space-4);
+  border-top: 1px solid var(--rule);
+  background-color: var(--surface);
+  color: var(--on-surface);
+}
+
+/* 1 · Footer Hero: Big glowing animated logo on top, inlined numbers & desliza beneath */
+.site-footer__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--space-4), 4vw, var(--space-8));
+  margin: 0 auto var(--space-6);
+  max-width: 760px;
+}
+
+/* Central rewind logo: prominent, glowing, breathing flame animation */
+.footer-logo-rewind {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--space-1);
+  padding: var(--space-1);
+  transition: transform var(--duration-ui) var(--ease-out);
+}
+
+.footer-logo-rewind:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.footer-logo-rewind__img {
+  display: block;
+  width: clamp(140px, 15vw, 192px);
+  height: auto;
+  max-width: 192px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(238, 88, 98, 0.35)) drop-shadow(0 0 24px var(--color-gold-a20));
+  animation: footer-logo-glow 3.2s ease-in-out infinite;
+  transition:
+    transform var(--duration-ui) var(--ease-out),
+    filter var(--duration-ui) var(--ease-out);
+}
+
+@keyframes footer-logo-glow {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 10px rgba(238, 88, 98, 0.35)) drop-shadow(0 0 22px var(--color-gold-a20));
+  }
+  50% {
+    transform: translateY(-4px) scale(1.03);
+    filter: drop-shadow(0 0 24px rgba(238, 88, 98, 0.7)) drop-shadow(0 0 40px var(--color-gold-a35));
+  }
+}
+
+.footer-logo-rewind:hover .footer-logo-rewind__img {
+  transform: translateY(-6px) scale(1.06);
+  filter: drop-shadow(0 0 32px rgba(238, 88, 98, 0.85)) drop-shadow(0 0 56px var(--color-gold-a55));
+}
+
+/* Inlined bar: Phone 1 + Desliza + Phone 2 all in 1 row */
+.site-footer__inlined-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--space-1), 2.5vw, var(--space-3));
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Phone cards left & right: icons on top, numbers underneath (touch >= 44px) */
+.site-footer__phone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--space-1);
+  background-color: var(--color-gold-a08);
+  border: 1px solid var(--color-gold-a20);
+  color: var(--accent-ink);
+  text-decoration: none;
+  min-height: 48px;
+  min-width: 112px;
+  transition:
+    background-color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out),
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    box-shadow var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__phone:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.site-footer__phone-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-ink);
+  flex-shrink: 0;
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__phone-num {
+  font-family: var(--font-display);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.site-footer__phone:hover {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-night);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--color-gold-a35);
+}
+
+.site-footer__phone:hover .site-footer__phone-icon {
+  color: var(--color-night);
+  transform: scale(1.12);
+}
+
+/* Inlined Desliza button in the center of the bar */
+.footer-desliza-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--space-1);
+  background-color: rgba(238, 88, 98, 0.08);
+  border: 1px solid rgba(238, 88, 98, 0.32);
+  color: #ee5862;
+  text-decoration: none;
+  min-height: 48px;
+  min-width: 96px;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out),
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out),
+    box-shadow var(--duration-ui) var(--ease-out);
+}
+
+.footer-desliza-btn:focus-visible {
+  outline: 2px solid #ee5862;
+  outline-offset: 2px;
+}
+
+.footer-desliza-btn__icon {
+  width: 18px;
+  height: 18px;
+  color: #ee5862;
+  animation: desliza-bounce 2.2s ease-in-out infinite;
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+@keyframes desliza-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.footer-desliza-btn__label {
+  font-family: var(--font-display);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.footer-desliza-btn:hover {
+  background-color: #ee5862;
+  border-color: #ee5862;
+  color: var(--color-night);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(238, 88, 98, 0.4);
+}
+
+.footer-desliza-btn:hover .footer-desliza-btn__icon {
+  color: var(--color-night);
+  transform: translateY(-2px);
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .footer-logo-rewind__img,
+  .footer-desliza-btn__icon {
+    animation: none;
+  }
+}
+
+/* Responsive mobile adjustments */
+@media (max-width: 859px) {
+  :root:not(.a11y-still):not(.a11y-zoomed) .site-footer:not(.is-tall) {
+    align-content: start;
+  }
+
+  .site-footer {
+    padding-top: var(--space-4);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer > .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--space-3);
+  }
+
+  .site-footer__hero {
+    gap: clamp(var(--space-3), 5vw, var(--space-5));
+    margin-bottom: var(--space-3);
+  }
+
+  .footer-logo-rewind__img {
+    width: clamp(130px, 38vw, 168px);
+    max-width: 172px;
+  }
+
+  .site-footer__inlined-bar {
+    gap: var(--space-1);
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .site-footer__phone {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: var(--space-1) 4px;
+  }
+
+  .site-footer__phone-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .site-footer__phone-num {
+    font-size: clamp(0.625rem, 2.3vw, 0.72rem);
+  }
+
+  .footer-desliza-btn {
+    flex: 0 1 auto;
+    min-width: 72px;
+    min-height: 44px;
+    padding: var(--space-1) 6px;
+  }
+
+  .footer-desliza-btn__icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .footer-desliza-btn__label {
+    font-size: clamp(0.625rem, 2.3vw, 0.72rem);
+  }
+}

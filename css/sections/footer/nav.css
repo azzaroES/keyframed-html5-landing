@@ -1,0 +1,197 @@
+/* Footer Component — Navigation, Social & Payment Methods
+   8px grid & Design Token System
+   ========================================================================== */
+
+/* 2 · Unified links row: Menu and Socials on 1 row on desktop, centered on mobile */
+.site-footer__links-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: var(--space-4);
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+}
+
+.site-footer__nav a {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-body);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--on-surface-soft);
+  text-decoration: none;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__nav a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.site-footer__nav a:hover {
+  color: var(--accent-ink);
+}
+
+.site-footer__social {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.site-footer__social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  color: var(--on-surface-soft);
+  text-decoration: none;
+  transition:
+    color var(--duration-ui) var(--ease-out),
+    border-color var(--duration-ui) var(--ease-out),
+    transform var(--duration-ui) var(--ease-out);
+}
+
+.site-footer__social a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.site-footer__social a:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent-ink);
+  transform: translateY(-2px);
+}
+
+.site-footer__social svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 3 · Payment methods: strict 1-row layout */
+.site-footer__pay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.site-footer__pay-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-ui);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--on-surface-soft);
+}
+
+.site-footer__pay-label svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-ink);
+}
+
+.pay {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 1.2vw, var(--space-1));
+  width: 100%;
+  max-width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pay__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 clamp(6px, 1.2vw, var(--space-2));
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background-color: var(--color-night-a45);
+  font-family: var(--font-display);
+  font-size: clamp(0.625rem, 1.8vw, 0.75rem);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--on-surface);
+  flex-shrink: 0;
+}
+
+/* Desktop layout for payment bar */
+@media (min-width: 860px) {
+  .site-footer__pay {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Mobile responsive layout */
+@media (max-width: 859px) {
+  .site-footer__links-row {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    margin-bottom: 0;
+  }
+
+  .site-footer__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .site-footer__social {
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .site-footer__social a {
+    width: 36px;
+    height: 36px;
+  }
+
+  .site-footer__social svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .site-footer__pay {
+    margin-top: 0;
+    gap: var(--space-1);
+  }
+
+  .pay {
+    gap: 4px;
+  }
+
+  .pay__item {
+    min-height: 24px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+  }
+}
